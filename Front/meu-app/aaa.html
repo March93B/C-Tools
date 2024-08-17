@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Mídia</title>
+    <style>
+        .modal {
+            display: none; /* Oculta o modal por padrão */
+            position: fixed;
+            z-index: 1; /* Fica sobre outros conteúdos */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Adiciona rolagem se necessário */
+            background-color: rgba(0,0,0,0.4); /* Cor de fundo com transparência */
+        }
+
+        /* Estilo para o conteúdo do modal */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* Margem superior e centralizado */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Largura do modal */
+            max-width: 800px; /* Largura máxima */
+            position: relative;
+        }
+
+        /* Estilo para o botão de fechar */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Estilo para o botão de abrir o modal */
+        .open-modal {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Estilo para a visualização de mídia */
+        .media-preview {
+            display: flex;
+            margin-top: 20px;
+            justify-content: center;
+            justify-items: center;
+            margin-bottom: 20px;
+        }
+
+        .media-preview img,
+        .media-preview video {
+            max-width: 60%;
+            height: auto;
+            
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botão para abrir o modal -->
+    <button class="open-modal" id="openModalBtn">Abrir Modal</button>
+
+    <!-- O Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <h2>Faça o upload da sua imagem ou vídeo</h2>
+            <input type="file" id="fileInput" accept="image/*,video/*">
+            <div id="mediaPreview" class="media-preview"></div>
+            <button class="open-modal" id="openModalBtn">Abrir Modal</button>
+
+        </div>
+    </div>
+
+    <script>
+        // Obtendo elementos do DOM
+        var modal = document.getElementById("myModal");
+        var openModalBtn = document.getElementById("openModalBtn");
+        var closeModalBtn = document.getElementById("closeModalBtn");
+        var fileInput = document.getElementById("fileInput");
+        var mediaPreview = document.getElementById("mediaPreview");
+
+        // Função para abrir o modal
+        openModalBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Função para fechar o modal
+        closeModalBtn.onclick = function() {
+            modal.style.display = "none";
+            mediaPreview.innerHTML = ''; // Limpa a visualização ao fechar o modal
+        }
+
+        // Fechar o modal se o usuário clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                mediaPreview.innerHTML = ''; // Limpa a visualização ao clicar fora
+            }
+        }
+
+        // Exibir imagem ou vídeo quando um arquivo é selecionado
+        fileInput.onchange = function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            
+            // Limpar a visualização anterior
+            mediaPreview.innerHTML = '';
+            
+            if (file) {
+                var mediaElement;
+
+                // Verificar tipo de arquivo e criar o elemento apropriado
+                if (file.type.startsWith('image/')) {
+                    mediaElement = document.createElement('img');
+                    reader.onload = function(e) {
+                        mediaElement.src = e.target.result;
+                        mediaPreview.appendChild(mediaElement);
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type.startsWith('video/')) {
+                    mediaElement = document.createElement('video');
+                    mediaElement.controls = true; // Adiciona controles ao player de vídeo
+                    mediaElement.src = URL.createObjectURL(file); // Define o URL do arquivo para o vídeo
+                    mediaPreview.appendChild(mediaElement);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
