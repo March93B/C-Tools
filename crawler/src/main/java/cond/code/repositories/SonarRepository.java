@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface SonarRepository extends JpaRepository<Sonar,Integer> {
     Optional<Sonar> findByApiNameSonar(String Name);
     Optional<Sonar> findByApiUrlSonar(String apiName);
+    boolean existsByApiNameSonar(String name);
+
 }

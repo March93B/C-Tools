@@ -7,10 +7,10 @@ public class Sonar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idSonar;
-    @Column(unique = true,name = "apiNameSonar")
+    @Column(name = "apiNameSonar")
     private String apiNameSonar;
 
-    @Column(unique = true,name = "apiUrlSonar")
+    @Column(name = "apiUrlSonar")
     private String apiUrlSonar;
 
     public Sonar(Integer idSonar, String apiNameSonar, String apiUrlSonar) {

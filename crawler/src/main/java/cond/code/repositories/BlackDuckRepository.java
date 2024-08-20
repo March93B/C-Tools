@@ -10,5 +10,6 @@ public interface BlackDuckRepository extends JpaRepository<BlackDuck, Integer> {
 
     Optional<BlackDuck> findByUrlApiBlackDuck(String Url);
     Optional<BlackDuck> findAllByNameApiBlackDuck(String apiNameBlackDuck);
+    boolean existsByNameApiBlackDuck(String name);
 
 }

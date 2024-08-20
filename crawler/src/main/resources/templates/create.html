@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de API's</title>
+    <link th:href="@{/index.css}" rel="stylesheet" type="text/css" media="all">
+    <link th:href="@{/app.css}" rel="stylesheet" type="text/css" media="all">
+
+    <style>
+
+
+        html {
+            height: 100%;
+            margin: 0;
+            overflow-y: scroll;
+        }
+        .tutorial {
+            border-width: 1px;
+            border-style: solid;
+            border-color:  #ced4da ;
+            height: 257px;
+            width: auto;
+            border-radius: .25rem;
+        }
+        .text-hint{
+            margin-top: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="App">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light rounded" aria-label="Eleventh navbar example" style="background-color: white;">
+            <div class="container-fluid" style="background-color: white;">
+                <a class="navbar-brand" href="#">CrawlerEY</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarsExample09">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sonar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">BlackDuck</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Cadastrar API's</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="how">Como usar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <main>
+            <div class="py-5 text-center">
+
+                <h2>Cadastro de API's</h2>
+                <p class="lead">
+                    Preencha o formulário para cadastrar uma nova API
+                </p>
+            </div>
+
+            <div class="row g-5">
+                <div class="col-md-5 col-lg-4 order-md-first justify-content-between align-items-center">
+                    <h5 class="align-items-center mb-3">
+                        <span class="text-primary">Informações adicionais</span>
+                    </h5>
+                    <div class="tutorial">
+                        <div class="text-hint">No campo "nome da API", você poderá colocar da forma que quiser.
+                            <br>
+                            <br>
+                            Em Ferramenta, selecione a ferramenta na qual a api será cadastrada.
+                            <br>
+                            <br>
+                            O Ambiente será usado apenas para o BlackDuck. Caso esteja cadastrando uma API no sonar, deixe o select em branco.
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7 col-lg-8">
+                    <h4 class="mb-3">Informações</h4>
+                    <form class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <label  class="form-label">Nome da API</label>
+                                <input type="text" class="form-control" id="nameApi" placeholder="" required>
+
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <label  class="form-label">Ferramentas</label>
+                                <select class="form-select" id="tools" required>
+                                    <option value="1">Selecione...</option>
+                                    <option value="2">SonarQube</option>
+                                    <option value="3">BlackDuck</option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <label  class="form-label">Ambiente Blackduck</label>
+                                <select class="form-select" id="enviroment" required>
+                                    <option value="1">Selecione...</option>
+                                    <option value="2">CDT</option>
+                                    <option value="3">QA</option>
+                                    <option value="4">...</option>
+
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="email" class="form-label">Url da API <span
+                                        class="text-muted">(De acordo com a ferramenta)</span></label>
+                                <input type="email" class="form-control" id="email"
+                                       placeholder="...">
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address for shipping updates.
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <button class="w-100 btn btn-primary btn-lg mt-5    " type="submit">Salvar Informações</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">2024 EY</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Como usar</a></li>
+                <li class="list-inline-item"><a href="#">Home</a></li>
+            </ul>
+        </footer>
+    </div>
+</div>
+
+<script th:src="@{/bootstrap.bundle.min.js}"></script>
+<script>
+
+
+
+    document.getElementById('tools').addEventListener('change', function() {
+        const firstSelectValue = this.value;
+        const secondSelect = document.getElementById('enviroment');
+
+        if (firstSelectValue === '2'|| firstSelectValue==='1') {
+            secondSelect.querySelectorAll('option').forEach(option => {
+                option.disabled = true;
+            });
+            const optionToEnable = secondSelect.querySelector('option[value="4"]');
+            optionToEnable.disabled = false;
+            secondSelect.value = optionToEnable.value;
+            secondSelect.classList.add('disabled-select');
+        } else {
+            secondSelect.querySelectorAll('option').forEach(option => {
+                option.disabled = false;
+            });
+            secondSelect.classList.remove('disabled-select');
+        }
+    });
+</script>
+
+
+
+</body>
+
+</html>

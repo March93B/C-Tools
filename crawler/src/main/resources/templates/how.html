@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.84.0">
+    <title>Como usar</title>
+    <link th:href="@{/index.css}" rel="stylesheet" type="text/css" media="all">
+    <link th:href="@{/app.css}" rel="stylesheet" type="text/css" media="all">
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        #blocked1 {
+            display: none;
+        }
+        #blocked2 {
+            display: none;
+        }
+        #blocked3 {
+            display: none;
+        }
+        #blocked4 {
+            display: none;
+        }
+        @media (max-width: 992px) {
+            #blocked1 {
+                display: block;
+            }
+            #blocked2 {
+                display: block;
+            }
+            #blocked3 {
+                display: block;
+            }
+            #blocked4 {
+                display: block;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light rounded" aria-label="Eleventh navbar example"
+         style="background-color: white;">
+        <div class="container-fluid" style="background-color: white;">
+            <a class="navbar-brand" href="#">CrawlerEY</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09"
+                    aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample09">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="create.html">Sonar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">BlackDuck</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="create">Cadastrar API's</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Como usar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+<div class="py-5 text-center">
+
+    <h2>Como usar o CrawlerEY?</h2>
+    <p class="lead">
+        Aprenda como cadastrar API's do Sonar/BlackDuck
+    </p>
+</div>
+<main class="container">
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">SonarQube</strong>
+                    <h3 class="mb-0">Url Sonar</h3>
+                    <div class="mb-1 text-muted"></div>
+
+                    <p class="card-text mb-auto">No Sonar, ache a request aaaaaa?aaaaaa... e copie a Request URL
+                        (Url de cadastro de API)
+
+                    </p>
+                    <p class="card-text mb-4">
+                    </p>
+                    <a href="#" id="blocked1" class="stretched-link">Clique para abrir a imagem</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
+                        <a href="#" class="stretched-link">
+                            <defs>
+                                <filter id="blurFilter">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+                                </filter>
+                            </defs>
+                            <title>Imagem de exemplo</title>
+                            <rect width="100%" height="100%" fill="#55595c" />
+
+                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                                   preserveAspectRatio="xMidYMid slice" />
+
+                            <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
+                                  alignment-baseline="middle" transform="translate(-60, -15)" />
+                            <text x="50%" y="48%" fill="#ffffff" text-anchor="middle" alignment-baseline="middle">
+                                <tspan x="50%" dy="0">Clique aqui</tspan>
+                                <tspan x="50%" dy="1.2em">para abrir</tspan>
+                                <tspan x="50%" dy="1.2em">a imagem</tspan>
+                            </text>
+                        </a>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">BlackDuck</strong>
+                    <h3 class="mb-0">Url BlackDuck</h3>
+                    <div class="mb-1 text-muted"></div>
+                    <p class="mb-auto">No BlackDuck, entre no repositório e na PR desejada. Procure pela request aaaaa/aaaa e
+                        copie a Request URL
+                        (Url de cadastro de API)
+                    </p>
+                    <a href="#" id="blocked2" class="stretched-link">Clique para abrir a imagem</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
+                        <a href="#" class="stretched-link">
+                            <defs>
+                                <filter id="blurFilter">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+                                </filter>
+                            </defs>
+                            <title>Imagem de exemplo</title>
+                            <rect width="100%" height="100%" fill="#55595c" />
+                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                                   preserveAspectRatio="xMidYMid slice" />
+
+                            <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
+                                  alignment-baseline="middle" transform="translate(-60, -15)" />
+                            <text x="50%" y="48%" fill="#ffffff" text-anchor="middle" alignment-baseline="middle">
+                                <tspan x="50%" dy="0">Clique aqui</tspan>
+                                <tspan x="50%" dy="1.2em">para abrir</tspan>
+                                <tspan x="50%" dy="1.2em">a imagem</tspan>
+                            </text>
+                        </a>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">Cookies</strong>
+                    <h3 class="mb-0">Utilizando Cookies</h3>
+                    <div class="mb-1 text-muted"></div>
+                    <p class="card-text mb-auto">Basta pegar os cookies de qualquer request de ambas as ferrametas, como na imagem ao lado :D</p>
+                    <a href="#" id="blocked3" class="stretched-link">Clique para abrir a imagem</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
+                        <a href="#" class="stretched-link">
+                            <defs>
+                                <filter id="blurFilter">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+                                </filter>
+                            </defs>
+                            <title>Imagem de exemplo</title>
+                            <rect width="100%" height="100%" fill="#55595c" />
+                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                                   preserveAspectRatio="xMidYMid slice" />
+
+                            <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
+                                  alignment-baseline="middle" transform="translate(-60, -15)" />
+                            <text x="50%" y="48%" fill="#ffffff" text-anchor="middle" alignment-baseline="middle">
+                                <tspan x="50%" dy="0">Clique aqui</tspan>
+                                <tspan x="50%" dy="1.2em">para abrir</tspan>
+                                <tspan x="50%" dy="1.2em">a imagem</tspan>
+                            </text>
+                        </a>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">Cadastro das API's</strong>
+                    <h3 class="mb-0">Cadastrando uma API</h3>
+                    <div class="mb-1 text-muted"></div>
+                    <p class="mb-auto">Para cadastrar uma API, as urls citadas anteriormente são fundamentais para o funcionamento da ferramenta</p>
+                    <a href="#" id="blocked4" class="stretched-link">Clique para abrir a imagem</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
+                        <a href="#" class="stretched-link">
+                            <defs>
+                                <filter id="blurFilter">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+                                </filter>
+                            </defs>
+                            <title>Imagem de exemplo</title>
+                            <rect width="100%" height="100%" fill="#55595c" />
+                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                                   preserveAspectRatio="xMidYMid slice" />
+
+                            <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
+                                  alignment-baseline="middle" transform="translate(-60, -15)" />
+                            <text x="50%" y="48%" fill="#ffffff" text-anchor="middle" alignment-baseline="middle">
+                                <tspan x="50%" dy="0">Clique aqui</tspan>
+                                <tspan x="50%" dy="1.2em">para abrir</tspan>
+                                <tspan x="50%" dy="1.2em">a imagem</tspan>
+                            </text>
+                        </a>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">2024 EY</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Como usar</a></li>
+                <li class="list-inline-item"><a href="#">Home</a></li>
+            </ul>
+        </footer>
+    </div>
+    <div class="row g-5">
+        <div class="col-md-8">
+        </div>
+
+    </div>
+
+</main>
+</body>
+<script th:src="@{/bootstrap.bundle.min.js}"></script>
+
+</html>

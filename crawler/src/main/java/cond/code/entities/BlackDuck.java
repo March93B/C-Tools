@@ -7,10 +7,10 @@ public class BlackDuck {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idBlackDuck;
-    @Column(unique=true, name = "nameApiBlackDuck")
+    @Column(name = "nameApiBlackDuck")
     private String nameApiBlackDuck ;
 
-    @Column(unique=true, name = "urlApiBlackDuck")
+    @Column(name = "urlApiBlackDuck")
     private String urlApiBlackDuck ;
 
     public BlackDuck(Integer idBlackDuck, String nameApiBlackDuck, String urlApiBlackDuck) {
