@@ -5,13 +5,62 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
+
     <title>Como usar</title>
     <link th:href="@{/index.css}" rel="stylesheet" type="text/css" media="all">
     <link th:href="@{/app.css}" rel="stylesheet" type="text/css" media="all">
 
     <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0,0,0,0.0);
+            margin: 5% auto;
+            border: 1px solid rgba(0,0,0,0.0);
+            width: 90%;
+            max-width: 900px;
+            max-height: 100vh;
+            overflow: hidden; /* Certifique-se de que o overflow está correto */
+            position: relative;
+        }
+
+        .close {
+            color: #ffffff;
+            float: right;
+            font-size: 36px;
+            font-weight: bold;
+            margin-top:-10px;
+            margin-left: 850px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .media-preview {
+            max-width: 100%;
+            max-height: 80vh;
+            margin: auto;
+            display: block;
+            margin-bottom: 30px;
+        }
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -98,6 +147,17 @@
     </p>
 </div>
 <main class="container">
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+                <img id="mediaPreview" class="media-preview" src="" alt="aaa">
+
+
+        </div>
+    </div>
+
+
     <div class="row mb-2">
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -116,7 +176,7 @@
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
-                        <a href="#" class="stretched-link">
+                        <a href="#" class="stretched-link" id="open1">
                             <defs>
                                 <filter id="blurFilter">
                                     <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
@@ -125,7 +185,7 @@
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
 
-                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -154,7 +214,7 @@
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
-                        <a href="#" class="stretched-link">
+                        <a href="#" class="stretched-link" id="open2">
                             <defs>
                                 <filter id="blurFilter">
                                     <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
@@ -162,7 +222,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -192,7 +252,7 @@
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
-                        <a href="#" class="stretched-link">
+                        <a href="#" class="stretched-link" id="open3">
                             <defs>
                                 <filter id="blurFilter">
                                     <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
@@ -200,7 +260,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -226,7 +286,7 @@
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
-                        <a href="#" class="stretched-link">
+                        <a href="#" class="stretched-link" id="open4">
                             <defs>
                                 <filter id="blurFilter">
                                     <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
@@ -234,7 +294,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -267,5 +327,73 @@
 </main>
 </body>
 <script th:src="@{/bootstrap.bundle.min.js}"></script>
+<script>
 
+    var modal = document.getElementById("myModal");
+    var open1 = document.getElementById("open1");
+    var blocked1 = document.getElementById("blocked1");
+    var open2 = document.getElementById("open2");
+    var blocked2 = document.getElementById("blocked2");
+    var open3 = document.getElementById("open3");
+    var blocked3 = document.getElementById("blocked3");
+    var open4 = document.getElementById("open4");
+    var blocked4 = document.getElementById("blocked4");
+    var closeModalBtn = document.getElementById("closeModalBtn");
+    var mediaPreview = document.getElementById("mediaPreview");
+    const img1 = '/images/aaaaaaaaaaaaaaaaaaaa.png';
+    const img2 = "/images/GP56Rm0XgAAGYPV.jpeg"
+    const img3 = "/images/ab67616d0000b273f1b9ef89d98f170d49abf3ed.jpg"
+    const img4 = "/images/thumb 2.jpg"
+
+    open1.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img1;
+    }
+    open2.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img2;
+    }
+    open3.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img3;
+    }
+    open4.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img4;
+    }
+    blocked1.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img1;
+    }
+    blocked2.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img2;
+    }
+    blocked3.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img3;
+
+    }
+    blocked4.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img4
+        ;
+    }
+
+    closeModalBtn.onclick = function() {
+        modal.style.display = "none";
+        mediaPreview.innerHTML = '';
+        document.body.style.overflow = "auto";
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            mediaPreview.innerHTML = '';
+            document.body.style.overflow = "auto";
+        }
+    }
+
+
+</script>
 </html>
