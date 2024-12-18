@@ -307,6 +307,7 @@
                                 <th class="col-id" scope="col">#</th>
                                 <th class="col-first" scope="col">Nome da Api/Front</th>
                                 <th class="col-last" scope="col">Url do Sonar</th>
+                                <th class="col-last" scope="col">back/front</th>
                                 <th class="col-last" scope="col">Releases/PROD</th>
                                 <th class="col-last" scope="col">Releases/UAT</th>
                                 <th class="col-last" scope="col">Disponível em PROD</th>
@@ -326,6 +327,8 @@
                                 </th>
                                 <td class="col-env" th:text="${sonar.nameApi}"></td>
                                 <td class="col-env" th:text="${sonar.urlApi}"></td>
+                                <td class="col-env" th:text="${sonar.type}"></td>
+
                                 <td class="col-env">
                                     <div class="input-group">
                                         <input type="text" class="form-control" style="height: 30px"
