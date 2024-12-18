@@ -461,7 +461,6 @@ public class PrismaCloudService {
             System.out.println(resultItem);
         }
 
-        updateExcelFile(gitHubs,b);
 
         try {
             updateExcelFile(gitHubs,b);

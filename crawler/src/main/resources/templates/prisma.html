@@ -310,6 +310,8 @@
                         <th class="col-id" scope="col">#</th>
                         <th class="col-first" scope="col">Nome da Api/Front</th>
                         <th class="col-last" scope="col">Url do GitHub</th>
+                        <th class="col-last" scope="col">back/front</th>
+
                         <th class="col-last" scope="col">Releases/PROD</th>
                         <th class="col-last" scope="col">Releases/UAT</th>
                         <th class="col-last" scope="col">Disponível em PROD</th>
@@ -329,6 +331,8 @@
                         </th>
                         <td class="col-env" th:text="${github.nameApi}"></td>
                         <td class="col-env" th:text="${github.urlApi}"></td>
+                        <td class="col-env" th:text="${github.type}"></td>
+
                         <td class="col-env">
                             <div class="input-group">
                                 <input type="text" class="form-control" style="height: 30px"
