@@ -365,6 +365,13 @@ public class CodeQLService {
             }
         }
 
+        try{
+            Thread.sleep(3000);
+            System.out.println("aaaa");
+        }catch (InterruptedException a){
+            a.printStackTrace();
+        }
+
         completedTasks=0;
         progress = 0;
         totalTasks = 0;
