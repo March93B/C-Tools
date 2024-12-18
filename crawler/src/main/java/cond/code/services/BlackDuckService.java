@@ -12,4 +12,5 @@ public interface BlackDuckService {
     BlackDuck getBlackDuckByApiName(String apiName);
     BlackDuck getBlackDuckByUrl(String url);
     List<BlackDuck> getBlackDucks();
+    List<BlackDuck> getBlackDucksActiveProd();
 }

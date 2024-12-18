@@ -1,15 +1,20 @@
 package cond.code.repositories;
 
 import cond.code.entities.BlackDuck;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface BlackDuckRepository extends JpaRepository<BlackDuck, Integer> {
 
-    Optional<BlackDuck> findByUrlApiBlackDuck(String Url);
-    Optional<BlackDuck> findAllByNameApiBlackDuck(String apiNameBlackDuck);
-    boolean existsByNameApiBlackDuck(String name);
+    Optional<BlackDuck> findByUrlApi(String Url);
+    Optional<BlackDuck> findAllByNameApi(String apiNameBlackDuck);
+    boolean existsByNameApi(String name);
+
+    List<BlackDuck> findAllByActiveProd(boolean activeProd, Sort sort);
 
 }

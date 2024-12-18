@@ -1,62 +1,55 @@
 package cond.code.controllers;
-
 import cond.code.entities.BlackDuck;
-import cond.code.repositories.BlackDuckRepository;
+import cond.code.entities.BlackDuckRequest;
+import cond.code.entities.Sonar;
 import cond.code.services.BlackDuckService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import cond.code.services.BlackDuckServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/blackduck")
 public class BlackDuckController {
-    String url;
-    String env;
 
     private final BlackDuckService blackDuckService;
+    private final BlackDuckServiceImpl blackDuckServiceImpl;
 
-    public BlackDuckController(BlackDuckService blackDuckService) {
+    public BlackDuckController(BlackDuckService blackDuckService, BlackDuckServiceImpl blackDuckServiceImpl) {
         this.blackDuckService = blackDuckService;
+        this.blackDuckServiceImpl = blackDuckServiceImpl;
+    }
+    @GetMapping()
+    public ModelAndView blackduck() {
+        ModelAndView mave = new ModelAndView("blackduck");
+        List<BlackDuck> blackducks = blackDuckService.getBlackDucks();
+        mave.addObject("blackducks", blackducks);
+        return mave;
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<BlackDuck> updateBlackDuck(@RequestBody BlackDuck blackDuck, @PathVariable Integer id) {
+        if (blackDuck == null || id == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
 
-    @PostMapping
-    public ResponseEntity<BlackDuck> createBlackDuck(@RequestBody BlackDuck blackDuck) {
+        blackDuck.setIdBlackDuck(id);
         try {
-            blackDuckService.createBlackDuck(blackDuck);
+            blackDuckServiceImpl.updateBlackDuck(blackDuck);
             return ResponseEntity.ok(blackDuck);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BlackDuck> updateBlackDuck(@PathVariable Integer id, @RequestBody BlackDuck blackDuck) {
-        blackDuck.setIdBlackDuck(id);
-        try {
-            blackDuckService.updateBlackDuck(blackDuck);
-            return ResponseEntity.ok(blackDuck);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBlackDuck(@PathVariable Integer id) {
         try {
             blackDuckService.deleteBlackDuck(id);
@@ -93,106 +86,54 @@ public class BlackDuckController {
         try {
             BlackDuck blackduck = blackDuckService.getBlackDuckByUrl(url);
             return ResponseEntity.ok(blackduck);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<BlackDuck>> getAllBlackDuck() {
-        try {
-            List<BlackDuck> blackDucks = blackDuckService.getBlackDucks();
-            return ResponseEntity.ok(blackDucks);
-        }catch (Exception e){
-            return ResponseEntity.notFound().build();
+    @PostMapping("/exeblack")
+    public ResponseEntity<String> executeBlackDuck(@RequestBody BlackDuckRequest request){
+        String cookie = request.getCookie();
+        String cookie2 = request.getCookie2();
+        String envv = request.getEnvv();
+        int releases = request.getRelease();
+        int choice = request.getChoice();
+        int prodOnly = request.getProdOnly();
+        List<BlackDuck> blackDucks;
+        if(prodOnly==1){
+
+            blackDucks = blackDuckService.getBlackDucksActiveProd();
+        }else{
+            blackDucks = blackDuckService.getBlackDucks();
         }
+        System.out.println("Received envv: " + envv);
+
+        if(choice==1){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try {
+                    blackDuckServiceImpl.foundyey(blackDucks, cookie, cookie2, envv,1,1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        if(choice==2){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try {
+                    blackDuckServiceImpl.foundyey(blackDucks, cookie, cookie2, envv,2,releases);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+
+        return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/exeblack/{cookie}/{envv}")
-    public ResponseEntity<String> executeBlackDuck(@PathVariable String cookie, @PathVariable String envv) {
-        try {
-            List<BlackDuck> blackDucks = blackDuckService.getBlackDucks();
-            sonar(blackDucks,envv);
-
-            return ResponseEntity.ok(url);
-
-        }catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    private static void sonar(List<BlackDuck> blackDucks, String env) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        Map<String, String> valueMap = new HashMap<>();
-        for (BlackDuck blackDuck : blackDucks) {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(blackDuck.getUrlApiBlackDuck()+"/"+env))
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3")
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Processando URL: " + blackDuck.getUrlApiBlackDuck()+"/"+env);
-
-            if (response.statusCode() == 200) {
-                String responseBody = response.body();
-                // Use uma biblioteca JSON para analisar o JSON, por exemplo, org.json ou Gson
-                // Aqui, para simplificação, vamos assumir que você tem um método para extrair valores do JSON
-                Map<String, Object> jsonResponse = parseJson(responseBody);
-
-                Map<String, Object> projectStatus = (Map<String, Object>) jsonResponse.get("categories");
-
-                extractAndStoreValue(valueMap, projectStatus, "VULNERABILITY", "CRITICAL");
-                extractAndStoreValue(valueMap, projectStatus, "VULNERABILITY", "HIGH");
-                extractAndStoreValue(valueMap, projectStatus, "LICENSE", "HIGH");
-                extractAndStoreValue(valueMap, projectStatus, "OPERATIONAL", "HIGH");
-            } else {
-                valueMap.put(blackDuck.getUrlApiBlackDuck()+"/"+env, "error");
-                System.out.println("Erro ao acessar o site");
-            }
-        }
-
-        writeExcel(valueMap);
-    }
-    private static Map<String, Object> parseJson(String json) {
-        // Adicione aqui a lógica para parsear o JSON. Pode ser com org.json, Gson ou outra biblioteca JSON.
-        // Retorne um mapa de exemplo para fins ilustrativos.
-        return new HashMap<>();
-    }
-    private static void writeExcel(Map<String, String> valueMap) throws IOException {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Data");
-
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("CDT");
-
-        int colnum = 1;
-        for (String key : valueMap.keySet()) {
-            headerRow.createCell(colnum).setCellValue(key);
-            colnum++;
-        }
-
-        Row dataRow = sheet.createRow(1);
-        for (int i = 0; i < colnum; i++) {
-            Cell cell = dataRow.createCell(i);
-            cell.setCellValue(valueMap.getOrDefault(headerRow.getCell(i).getStringCellValue(), "error"));
-        }
-
-        try (FileOutputStream fileOut = new FileOutputStream("blackduck.xlsx")) {
-            workbook.write(fileOut);
-        }
-
-        workbook.close();
-    }
-    private static void extractAndStoreValue(Map<String, String> valueMap, Map<String, Object> projectStatus, String category, String severity) {
-        Map<String, Object> conditions = (Map<String, Object>) projectStatus.get(category);
-        if (conditions != null) {
-            String actualValue = (String) conditions.get(severity);
-            valueMap.put(severity, actualValue != null ? actualValue : "error");
-        } else {
-            valueMap.put(severity, "error");
-            System.out.println("Não encontrado");
-        }
+    @GetMapping("/progress")
+    public ResponseEntity<Integer> getProgress() {
+        return ResponseEntity.ok(blackDuckServiceImpl.getProgress());
     }
 }
-

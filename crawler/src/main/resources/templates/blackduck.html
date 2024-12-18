@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackduck</title>
+    <link th:href="@{/index.css}" rel="stylesheet" type="text/css" media="all">
+    <link th:href="@{/app.css}" rel="stylesheet" type="text/css" media="all">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 4px;
+            padding: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 500px;
+            word-wrap: break-word;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .input-group-text {
+            cursor: pointer;
+            color: green;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .table td {
+            position: relative;
+        }
+
+        .tutorial {
+            border-width: 1px;
+            border-style: solid;
+            border-color: #ced4da;
+            height: 257px;
+            width: auto;
+            border-radius: .25rem;
+        }
+
+        .table-fixed {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .table-fixed th,
+        .table-fixed td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .col-id {
+            width: 10%;
+        }
+
+        .col-env {
+            width: 20%;
+        }
+
+        .col-first {
+            width: 35%;
+        }
+
+        .col-last {
+            width: 35%;
+        }
+
+        .text-hint {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .buttonL {
+            background-color: rgb(255, 255, 255);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            color: black;
+        }
+
+        .buttonL:hover {
+            background-color: rgb(235, 235, 235);
+        }
+
+        .flexx {
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-dialog {
+            max-width: 500px;
+            margin: 1.75rem auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .modal-header .btn-close {
+            background: transparent;
+            border: none;
+        }
+
+        .progress {
+            height: 20px;
+            background-color: #f3f3f3;
+        }
+
+        .progress-bar {
+            background-color: #4caf50;
+            height: 100%;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        input:checked + .slider {
+            background-color: #93b7f1;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+    </style>
+</head>
+
+<body>
+<div class="App">
+    <div class="container">
+        <div id="progressModal" class="modal" tabindex="-1" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Progresso da execução</h5>
+                        <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="progressValue">0%</p>
+                        <div class="progress">
+                            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light rounded" aria-label="Eleventh navbar example"
+             style="background-color: white;">
+            <div class="container-fluid" style="background-color: white;">
+                <a class="navbar-brand" href="#">Crawler</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarsExample09">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="sonar">Sonar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">BlackDuck</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="prisma">PrismaCloud</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="codeql">CodeQL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="create">Cadastrar API's</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="how">Como usar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="shutdown">Desligar servidor</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <main>
+            <div class="py-5 text-center">
+                <h2>Blackduck</h2>
+                <p class="lead">Execute o crawler, consulte e delete API's</p>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="col-md-4 mb-4 justify-content-center">
+                    <label class="btn btn btn-primary ">
+                        <input type="radio" name="options" id="option1" autocomplete="off"> Todos
+                    </label>
+                    <label class="btn btn-primary ">
+                        <input type="radio" name="options" id="option2" autocomplete="off" disabled > Front
+                    </label>
+                    <label class="btn btn-primary ">
+                        <input type="radio" name="options" id="option3" autocomplete="off" disabled> Back
+                    </label>
+                    <label class="btn btn-primary">
+                        PROD
+                        <label class="switch">
+                            <input type="checkbox" id="mySwitch">
+                            <span class="slider"></span>
+                        </label>
+                        <span hidden id="switchValue">0</span>
+                    </label>
+                </div>
+            </div>
+            <form id="apiForm" method="get" novalidate>
+                <div class="row g-5">
+                    <div class="col-md-4">
+                        <label class="form-label">Cookie</label>
+                        <input type="text" class="form-control" id="cookie" placeholder="cookie" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Env</label>
+                        <select class="form-select" id="enviroment" name="enviroment" required>
+                            <option value="">Selecione...</option>
+                            <option value="main">Main</option>
+                            <option value="refs/heads/releases/">Latest Releases</option>
+                            <option value="Releases/UAT">Releases/UAT</option>
+                            <option value="Releases/PROD">Releases/PROD</option>
+
+                        </select>
+                        <!--                            <input type="text" class="form-control" id="enviroment" placeholder="Release 1.4.0..."-->
+                        <!--                                required>-->
+                    </div>
+                    <div class="col-md-5">
+                        <button class="w-100 btn btn-primary btn-lg mt-4" id="startProcessButton"
+                                type="submit">Executar Crawler</button>
+                    </div>
+                    <div class="input-group mb-3 col-md-3">
+                        <input type="text" class="form-control" id="searchInput"
+                               placeholder="Pesquisar Lista de APis" aria-label="Pesquisar">
+                    </div>
+                </div>
+            </form>
+
+            <div class="row g-5">
+                <table class="table table-striped table-fixed">
+                    <thead>
+                    <tr>
+                        <th class="col-id" scope="col">#</th>
+                        <th class="col-first" scope="col">Nome da Api/Front</th>
+                        <th class="col-last" scope="col">Url do Blackduck</th>
+                        <th class="col-last" scope="col">Releases/PROD</th>
+                        <th class="col-last" scope="col">Releases/UAT</th>
+                        <th class="col-last" scope="col">Disponível em PROD</th>
+
+                    </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    <tr th:each="blackduck : ${blackducks}">
+                        <th class="col-id" scope="row">
+                            <button class="buttonL delete-button" th:data-id="${blackduck.idBlackDuck}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#a60808"
+                                     class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path
+                                            d="M5.5 0a.5.5 0 0 1 .5.5V1h5V.5a.5.5 0 0 1 1 0V1h1.5a.5.5 0 0 1 .5.5v.5H15a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h1V1a.5.5 0 0 1 .5-.5V.5a.5.5 0 0 1 .5-.5zM1 2h14v1H1V2zM3.5 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1z" />
+                                </svg>
+                            </button>
+                        </th>
+                        <td class="col-env" th:text="${blackduck.nameApi}"></td>
+                        <td class="col-env" th:text="${blackduck.urlApi}"></td>
+                        <td class="col-env">
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="height: 30px"
+                                       th:placeholder="${blackduck.releasesPROD != null ? blackduck.releasesPROD : ''}"
+                                       th:value="${blackduck.releasesPROD != null ? blackduck.releasesPROD : ''}"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                       th:id="'releasesPROD-' + ${blackduck.idBlackDuck}"
+                                       title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
+                                <span class="input-group-text"
+                                      th:onclick="'updateReleases(' + ${blackduck.idBlackDuck} + ')'" >
+            <i class="bi bi-check-circle"></i>
+        </span>
+                            </div>
+                        </td>
+
+                        <td class="col-env">
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="height: 30px"
+                                       th:placeholder="${blackduck.releasesUAT != null ? blackduck.releasesUAT : ''}"
+                                       th:value="${blackduck.releasesUAT != null ? blackduck.releasesUAT : ''}"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                       th:id="'releasesUAT-' + ${blackduck.idBlackDuck}"
+                                       title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
+                                <span class="input-group-text"
+                                      th:onclick="'updateReleases(' + ${blackduck.idBlackDuck} + ')'" >
+            <i class="bi bi-check-circle"></i>
+        </span>
+                            </div>
+                        </td>
+
+                        <td class="col-env">
+                            <div class="input-group">
+                                <div class="form-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="switch-${blackduck.idBlackDuck}"
+                                           th:checked="${blackduck.isActiveProd()}"
+                                           th:onclick="|updateIsActiveProd(${blackduck.idBlackDuck}, this.checked)|">
+                                    <span class="slider"></span>
+                                </label>
+                                </div>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">2024 Crawler</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Como usar</a></li>
+            </ul>
+        </footer>
+    </div>
+</div>
+<script th:src="@{/bootstrap.bundle.min.js}"></script>
+
+<script>
+    document.getElementById('startProcessButton').addEventListener('click', function(event) {
+        const options = document.getElementsByName('options');
+        let selected = false;
+
+        for (let option of options) {
+            if (option.checked) {
+                selected = true;
+                break;
+            }
+        }
+
+        if (!selected) {
+            alert('Por favor, selecione uma opção antes de continuar.');
+            event.preventDefault();
+            return;
+        }
+
+        executeEndpoint(event);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[name="options"]').forEach(radio => {
+            radio.addEventListener('change', filterTable);
+        });
+        document.getElementById('searchInput').addEventListener('input', filterTable);
+    });
+
+    function filterTable() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const selectedOption = document.querySelector('input[name="options"]:checked').id;
+        const rows = document.querySelectorAll('#tableBody tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const textContent = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
+            const apiType = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+            const matchesSearch = textContent.includes(searchInput);
+            const matchesOption = selectedOption === 'option1' || apiType === getOptionType(selectedOption);
+
+            row.style.display = matchesSearch && matchesOption ? '' : 'none';
+        });
+    }
+    function getOptionType(optionId) {
+        switch (optionId) {
+            case 'option1':
+                return '';
+            case 'option2':
+                return 'front';
+            case 'option3':
+                return 'back';
+            default:
+                return '';
+        }
+    }
+</script>
+<script>
+    const switchElement = document.getElementById("mySwitch");
+    const switchValueDisplay = document.getElementById("switchValue");
+    var switchV;
+    switchElement.addEventListener('change', function() {
+        if (switchElement.checked) {
+            switchValueDisplay.textContent = '1';
+            switchV = 1
+        } else {
+            switchValueDisplay.textContent = '0';
+            switchV = 0
+        }
+    });
+
+    if (switchElement.checked) {
+        switchValueDisplay.textContent = '1';
+        switchV = 1
+
+    } else {
+        switchValueDisplay.textContent = '0';
+        switchV = 0
+
+    }
+    let selectedOption = 'todos';
+
+    console.log(selectedOption);
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[name="options"]').forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                selectedOption = event.target.id;
+            });
+        });
+
+        document.getElementById('apiForm').addEventListener('submit', executeEndpoint);
+    });
+
+    function executeEndpoint(event) {
+        event.preventDefault();
+        let progressInterval;
+        let timeoutId;
+        let isUpdating = false;
+
+        function openModal() {
+            document.getElementById('progressModal').style.display = 'block';
+            progressInterval = setInterval(updateProgress, 1000);
+
+        }
+
+        function closeModal() {
+            document.getElementById('progressModal').style.display = 'none';
+            clearInterval(progressInterval);
+            clearTimeout(timeoutId);
+        }
+
+        function closeModalAndAbort() {
+            closeModal();
+            console.log("Processo interrompido devido a falta de resposta");
+            alert("Processo interrompido devido a falta de resposta")
+        }
+
+        function updateProgress() {
+            if (isUpdating) return;
+
+            isUpdating = true;
+            fetch('/blackduck/progress')
+                .then(response => response.json())
+                .then(progress => {
+
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                    }
+
+                    timeoutId = setTimeout(closeModalAndAbort, 7000);
+                    console.log(timeoutId)
+                    const progressValue = document.getElementById('progressValue');
+                    const progressBar = document.getElementById('progressBar');
+
+                    progressValue.textContent = progress + '%';
+                    progressBar.style.width = progress + '%';
+
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        if (progress >= 100) {
+                            clearInterval(progressInterval);
+                            setTimeout(function() {
+                                closeModal();
+                            }, 3000);
+                        }
+                    }
+                    isUpdating = false;
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar o progresso:', error);
+                    clearInterval(progressInterval);
+                    closeModalAndAbort();
+                    isUpdating = false;
+                });
+        }
+
+        const cookieString = document.getElementById('cookie').value;
+        let env = document.getElementById('enviroment').value;
+        const cookies = cookieString.split(';').map(cookie => cookie.trim());
+        const cookie1 = cookies[0] || 'defaultCookie1';
+        const cookie2 = cookies[1] || 'defaultCookie2';
+        let requestData={}
+        if(env==="main"){
+            requestData = {
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
+                choice: 1,
+                releases:1,
+                prodOnly:switchV
+
+            };
+        }
+        if(env==="refs/heads/releases/"){
+            requestData = {
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
+                choice: 1,
+                releases:1,
+                prodOnly:switchV
+
+            };
+        }
+        if(env==="releases/PROD"){
+            requestData = {
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
+                choice: 2,
+                releases:2,
+                prodOnly:switchV
+
+            };
+        }
+        if(env==="releases/UAT"){
+            requestData = {
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
+                choice: 2,
+                releases:3,
+                prodOnly:switchV
+
+            };
+        }
+        if(env === ""){
+            alert("selecione uma opção válida de Env")
+        }else{
+            openModal();
+        }
+        const postRequest = (endpoint) => {
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Processo iniciado:', data);
+                })
+                .catch(error => {
+                    console.error('Erro ao iniciar o processo:', error);
+                });
+        };
+
+        if (selectedOption === "option1") {
+            postRequest('/blackduck/exeblack');
+        }
+
+        if (selectedOption === "option2") {
+            postRequest('/blackduck/exeblack');
+        }
+
+        if (selectedOption === "option3") {
+            postRequest('/blackduck/exeblack');
+        }
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const idBlack = event.currentTarget.getAttribute('data-id');
+
+                if (confirm('Tem certeza de que deseja excluir este item?')) {
+                    fetch(`/blackduck/delete/${idBlack}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(() => {
+                            alert('Item excluído com sucesso!');
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro ao excluir o item.');
+                        });
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tooltip';
+        document.body.appendChild(tooltip);
+        const tableCells = document.querySelectorAll('table td');
+
+        tableCells.forEach(cell => {
+            cell.addEventListener('mouseenter', (event) => {
+                const content = event.target.textContent.trim();
+                if (content) {
+                    tooltip.textContent = content;
+                    tooltip.classList.add('show');
+                }
+            });
+
+            cell.addEventListener('mousemove', (event) => {
+                const xOffset = 10;
+                const yOffset = 10;
+                tooltip.style.left = (event.pageX + xOffset) + 'px';
+                tooltip.style.top = (event.pageY + yOffset) + 'px';
+            });
+
+            cell.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+        });
+    });
+</script>
+
+<script>
+    function updateReleases(id) {
+        const releasesInput = document.getElementById('releasesPROD-' + id);
+        const releasesInput2 = document.getElementById('releasesUAT-' + id);
+
+        if (releasesInput && releasesInput2) {
+            let releaseValue = releasesInput.value.trim() === '' ? "none" : releasesInput.value;
+            let releaseValue2 = releasesInput2.value.trim() === '' ? "none" : releasesInput2.value;
+
+            console.log('Valores enviados para o servidor:', releaseValue, releaseValue2);
+
+            const data = {
+                releasesPROD: releaseValue,
+                releasesUAT: releaseValue2
+            };
+
+            fetch('http://localhost:8080/blackduck/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Releases atualizados:', data);
+
+                    if (data.releasesPROD === null) {
+                        releasesInput.value = '';
+                    } else {
+                        releasesInput.value = data.releasesPROD || '';
+                    }
+
+                    if (data.releasesUAT === null) {
+                        releasesInput2.value = '';
+                    } else {
+                        releasesInput2.value = data.releasesUAT || '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar releases:', error);
+                });
+        } else {
+            console.error('Input não encontrado para o ID:', id);
+        }
+    }
+    function updateIsActiveProd(idBlackDuck, isActive) {
+
+
+        fetch(`/blackduck/${idBlackDuck}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ activeProd: isActive })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Atualizado com sucesso', data);
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar', error);
+            });
+    }
+</script>
+
+</body>
+
+
+</html>
