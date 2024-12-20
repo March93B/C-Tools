@@ -13,4 +13,6 @@ public interface BlackDuckService {
     BlackDuck getBlackDuckByUrl(String url);
     List<BlackDuck> getBlackDucks();
     List<BlackDuck> getBlackDucksActiveProd();
+    void foundyey(List<BlackDuck> blackDucks, String cookie, String cookie2, String envv, int a, int b) throws Exception;
+    int getProgress();
 }

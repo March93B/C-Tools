@@ -1,44 +1,25 @@
 
 package cond.code.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cond.code.entities.GitHub;
 import cond.code.entities.GitHubRequest;
-import cond.code.services.GitHubServiceImpl;
+import cond.code.services.GitHubService;
 import cond.code.services.PrismaCloudService;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.relational.core.sql.In;
+import cond.code.services.PrismaCloudServiceImpl;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
-import org.springframework.web.client.RestTemplate;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
-import javax.net.ssl.SSLSocketFactory;
-
-import java.util.*;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @RestController
 @RequestMapping("/prisma")
 public class PrismaController {
 
-    private final GitHubServiceImpl gitHubService;
+    private final GitHubService gitHubService;
     private final PrismaCloudService prismaCloudService;
-    public PrismaController(GitHubServiceImpl gitHubService,PrismaCloudService prismaCloudService ) {
+    public PrismaController(GitHubService gitHubService, PrismaCloudService prismaCloudService ) {
         this.gitHubService = gitHubService;
         this.prismaCloudService = prismaCloudService;
     }

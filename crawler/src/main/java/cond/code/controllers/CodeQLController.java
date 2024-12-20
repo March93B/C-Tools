@@ -3,7 +3,7 @@ package cond.code.controllers;
 import cond.code.entities.GitHub;
 import cond.code.entities.GitHubRequest;
 import cond.code.services.CodeQLService;
-import cond.code.services.GitHubServiceImpl;
+import cond.code.services.GitHubService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("/codeql")
 public class CodeQLController {
     private final CodeQLService codeQLService;
-    private final GitHubServiceImpl gitHubService;
+    private final GitHubService gitHubService;
 
-    public CodeQLController(GitHubServiceImpl gitHubService, CodeQLService codeQLService) {
+    public CodeQLController(GitHubService gitHubService, CodeQLService codeQLService) {
         this.gitHubService = gitHubService;
         this.codeQLService = codeQLService;
     }

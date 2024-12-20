@@ -1,7 +1,6 @@
 package cond.code.controllers;
 import cond.code.entities.BlackDuck;
 import cond.code.entities.BlackDuckRequest;
-import cond.code.entities.Sonar;
 import cond.code.services.BlackDuckService;
 import cond.code.services.BlackDuckServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,9 @@ import java.util.concurrent.Executors;
 public class BlackDuckController {
 
     private final BlackDuckService blackDuckService;
-    private final BlackDuckServiceImpl blackDuckServiceImpl;
 
     public BlackDuckController(BlackDuckService blackDuckService, BlackDuckServiceImpl blackDuckServiceImpl) {
         this.blackDuckService = blackDuckService;
-        this.blackDuckServiceImpl = blackDuckServiceImpl;
     }
     @GetMapping()
     public ModelAndView blackduck() {
@@ -42,7 +39,7 @@ public class BlackDuckController {
 
         blackDuck.setIdBlackDuck(id);
         try {
-            blackDuckServiceImpl.updateBlackDuck(blackDuck);
+            blackDuckService.updateBlackDuck(blackDuck);
             return ResponseEntity.ok(blackDuck);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -112,7 +109,7 @@ public class BlackDuckController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    blackDuckServiceImpl.foundyey(blackDucks, cookie, cookie2, envv,1,1);
+                    blackDuckService.foundyey(blackDucks, cookie, cookie2, envv,1,1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -122,7 +119,7 @@ public class BlackDuckController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    blackDuckServiceImpl.foundyey(blackDucks, cookie, cookie2, envv,2,releases);
+                    blackDuckService.foundyey(blackDucks, cookie, cookie2, envv,2,releases);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -134,6 +131,6 @@ public class BlackDuckController {
     }
     @GetMapping("/progress")
     public ResponseEntity<Integer> getProgress() {
-        return ResponseEntity.ok(blackDuckServiceImpl.getProgress());
+        return ResponseEntity.ok(blackDuckService.getProgress());
     }
 }

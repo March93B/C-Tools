@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface SonarRepository extends JpaRepository<Sonar,Integer> {
     Optional<Sonar> findByNameApi(String Name);
     Optional<Sonar> findByUrlApi(String apiName);
-    boolean existsByNameApi(String name);
     List<Sonar> findAllByTypeEquals(String type, Sort sort);
 
     List<Sonar> findAllByActiveProd(boolean activeProd, Sort sort);

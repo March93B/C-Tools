@@ -1,15 +1,13 @@
 package cond.code.services;
 
-import aj.org.objectweb.asm.commons.TryCatchBlockSorter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cond.code.entities.BlackDuck;
-import cond.code.entities.Sonar;
 import cond.code.repositories.BlackDuckRepository;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocketFactory;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,6 +30,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -286,7 +286,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
                     }
                 }
             }
-            }
+        }
 
 
         blackResult.add("https://blackduckorsomar/error/123error/321aaa");
@@ -294,7 +294,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
     }
 
 
-
+    @Override
     public void foundyey(List<BlackDuck> blackDucks, String cookie, String cookie2, String envv, int a, int b) throws Exception {
         HttpClient client = createHttpClient();
         Map<String, String> headers = new HashMap<>();
@@ -358,7 +358,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         progress = 0;
 
     }
-
+    @Override
     public synchronized int getProgress() {
         return progress;
     }
@@ -473,15 +473,59 @@ public class BlackDuckServiceImpl implements BlackDuckService {
 
         int headerIndex = 0;
         if(b==1){
+            XSSFCellStyle cellStyle = (XSSFCellStyle) workbook.createCellStyle();
+
+            XSSFFont font = (XSSFFont) workbook.createFont();
+            font.setColor(new XSSFColor((IndexedColorMap) new Color(147, 183, 241)));
+
+            cellStyle.setFont(font);
+
             for (int i = 0; i < blackDucks.size(); i++) {
                 String apiName = blackDucks.get(i).getNameApi();
-                headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. Critical "+ blackduckExcel.get(i));
-                headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. High "+ blackduckExcel.get(i));
-                headerRow.createCell(headerIndex++).setCellValue(apiName + " License "+ blackduckExcel.get(i));
-                headerRow.createCell(headerIndex++).setCellValue(apiName + " License M "+ blackduckExcel.get(i));
-                headerRow.createCell(headerIndex++).setCellValue("LGPL "+ blackduckExcel.get(i));
-                headerRow.createCell(headerIndex++).setCellValue(apiName + " Operational "+ blackduckExcel.get(i));
 
+                XSSFRichTextString richText1 = new XSSFRichTextString(apiName + " Sec. Critical ");
+                int startIndex1 = richText1.length();
+                richText1.append(blackduckExcel.get(i));
+                richText1.applyFont(startIndex1, richText1.length(), font);
+
+                headerRow.createCell(headerIndex++).setCellValue(richText1);
+                headerRow.getCell(headerIndex - 1).setCellStyle(cellStyle);
+
+
+                XSSFRichTextString richText2 = new XSSFRichTextString(apiName + " Sec. High ");
+                int startIndex2 = richText2.length();
+                richText2.append(blackduckExcel.get(i));
+                richText2.applyFont(startIndex2, richText2.length(), font);
+                headerRow.createCell(headerIndex++).setCellValue(richText2);
+                headerRow.getCell(headerIndex - 1).setCellStyle(cellStyle);
+
+                XSSFRichTextString richText3 = new XSSFRichTextString(apiName + " License ");
+                int startIndex3 = richText3.length();
+                richText3.append(blackduckExcel.get(i));
+                richText3.applyFont(startIndex3, richText3.length(), font);
+                headerRow.createCell(headerIndex++).setCellValue(richText3);
+                headerRow.getCell(headerIndex - 1).setCellStyle(cellStyle);
+
+                XSSFRichTextString richText4 = new XSSFRichTextString(apiName + " License M ");
+                int startIndex4 = richText4.length();
+                richText4.append(blackduckExcel.get(i));
+                richText4.applyFont(startIndex4, richText4.length(), font);
+                headerRow.createCell(headerIndex++).setCellValue(richText4);
+                headerRow.getCell(headerIndex - 1).setCellStyle(cellStyle);
+
+                XSSFRichTextString richText5 = new XSSFRichTextString("LGPL ");
+                int startIndex5 = richText5.length();
+                richText5.append(blackduckExcel.get(i));
+                richText5.applyFont(startIndex5, richText5.length(), font);
+                headerRow.createCell(headerIndex++).setCellValue(richText5);
+                headerRow.getCell(headerIndex - 1).setCellStyle(cellStyle);
+
+                XSSFRichTextString richText6 = new XSSFRichTextString(apiName + " Operational ");
+                int startIndex6 = richText6.length();
+                richText6.append(blackduckExcel.get(i));
+                richText6.applyFont(startIndex6, richText6.length(), font);
+                headerRow.createCell(headerIndex++).setCellValue(richText6);
+                headerRow.getCell(headerIndex - 1).setCellStyle(cellStyle);
             }
 
             Row dataRow = sheet.createRow(headerRowIndex + 1);

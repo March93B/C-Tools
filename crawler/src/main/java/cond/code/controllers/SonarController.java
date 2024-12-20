@@ -3,7 +3,6 @@ package cond.code.controllers;
 import cond.code.entities.Sonar;
 import cond.code.entities.SonarRequest;
 import cond.code.services.SonarService;
-import cond.code.services.SonarServiceImpl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +17,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/sonar")
 public class SonarController {
-    private final SonarServiceImpl sonarServiceImpl;
     private final SonarService sonarService;
 
     @GetMapping()
     public ModelAndView sonar() {
         ModelAndView mav = new ModelAndView("sonar");
-        List<Sonar> sonars = sonarServiceImpl.getsonars();
+        List<Sonar> sonars = sonarService.getsonars();
         mav.addObject("sonars", sonars);
         return mav;
     }
 
 
-    public SonarController(SonarServiceImpl sonarServiceImpl, SonarService sonarService){
-        this.sonarServiceImpl = sonarServiceImpl;
+    public SonarController(SonarService sonarService){
         this.sonarService = sonarService;
     }
 
@@ -43,7 +40,7 @@ public class SonarController {
 
         sonar.setIdSonar(id);
         try {
-            sonarServiceImpl.updateSonar(sonar);
+            sonarService.updateSonar(sonar);
             return ResponseEntity.ok(sonar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -52,7 +49,7 @@ public class SonarController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteSonar(@PathVariable Integer id){
         try {
-            sonarServiceImpl.deleteSonar(id);
+            sonarService.deleteSonar(id);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -64,7 +61,7 @@ public class SonarController {
     @GetMapping("/{id}")
     public ResponseEntity<Sonar> findSonarById(@PathVariable Integer id){
         try {
-            Sonar sonar = sonarServiceImpl.getSonarById(id);
+            Sonar sonar = sonarService.getSonarById(id);
             return ResponseEntity.ok(sonar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -74,7 +71,7 @@ public class SonarController {
     @GetMapping("/name/{name}")
     public ResponseEntity<Sonar> findSonarByName(@PathVariable String name){
         try {
-            Sonar sonar = sonarServiceImpl.getSonarByName(name);
+            Sonar sonar = sonarService.getSonarByName(name);
             return ResponseEntity.ok(sonar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -84,7 +81,7 @@ public class SonarController {
     @GetMapping("/url/{url}")
     public ResponseEntity<Sonar> findSonarByUrl(@PathVariable String url){
         try {
-            Sonar sonar = sonarServiceImpl.getSonarByUrl(url);
+            Sonar sonar = sonarService.getSonarByUrl(url);
             return ResponseEntity.ok(sonar);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -110,13 +107,13 @@ public class SonarController {
             sonarList = sonarService.getsonars();
 
         }
-        sonarServiceImpl.updateProgress(0);
+        sonarService.updateProgress(0);
 
         if(choice==1){
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    sonarServiceImpl.sonar(sonarList, cookie, cookie2, envv,1,1);
+                    sonarService.sonar(sonarList, cookie, cookie2, envv,1,1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -126,7 +123,7 @@ public class SonarController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    sonarServiceImpl.sonar(sonarList, cookie, cookie2, envv,2,releases);
+                    sonarService.sonar(sonarList, cookie, cookie2, envv,2,releases);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -146,7 +143,7 @@ public class SonarController {
         int choice = request.getChoice();
         int releases = request.getRelease();
         int prodOnly = request.getProdOnly();
-        sonarServiceImpl.updateProgress(0);
+        sonarService.updateProgress(0);
 
         List<Sonar> sonarList;
 
@@ -162,7 +159,7 @@ public class SonarController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    sonarServiceImpl.sonar(sonarList, cookie, cookie2, envv,1,1);
+                    sonarService.sonar(sonarList, cookie, cookie2, envv,1,1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -172,7 +169,7 @@ public class SonarController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    sonarServiceImpl.sonar(sonarList, cookie, cookie2, envv,2,releases);
+                    sonarService.sonar(sonarList, cookie, cookie2, envv,2,releases);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -190,7 +187,7 @@ public class SonarController {
         int choice = request.getChoice();
         int releases = request.getRelease();
         int prodOnly = request.getProdOnly();
-        sonarServiceImpl.updateProgress(0);
+        sonarService.updateProgress(0);
 
         List<Sonar> sonarList;
 
@@ -206,7 +203,7 @@ public class SonarController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    sonarServiceImpl.sonar(sonarList, cookie, cookie2, envv,1,1);
+                    sonarService.sonar(sonarList, cookie, cookie2, envv,1,1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -216,7 +213,7 @@ public class SonarController {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.submit(() -> {
                 try {
-                    sonarServiceImpl.sonar(sonarList, cookie, cookie2, envv,2,releases);
+                    sonarService.sonar(sonarList, cookie, cookie2, envv,2,releases);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -228,7 +225,7 @@ public class SonarController {
 
     @GetMapping("/progress")
     public ResponseEntity<Integer> getProgress() {
-        return ResponseEntity.ok(sonarServiceImpl.getProgress());
+        return ResponseEntity.ok(sonarService.getProgress());
     }
 
 

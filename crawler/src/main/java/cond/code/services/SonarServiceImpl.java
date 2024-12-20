@@ -33,16 +33,12 @@ import java.util.regex.Pattern;
 @Service
 public class SonarServiceImpl implements SonarService{
 
-    public SonarServiceImpl(ValuesSonarService valuesSonarService) {
-        this.valuesSonarService = valuesSonarService;
-    }
     private static final Pattern VERSION_PATTERN = Pattern.compile("^releases/\\d+\\.\\d+(\\.\\d+)*$");
 
     private boolean isValidVersion(String versionName) {
         Matcher matcher = VERSION_PATTERN.matcher(versionName);
         return matcher.matches();
     }
-    private final ValuesSonarService valuesSonarService;
 
     StringBuilder message = new StringBuilder();
     int progress = 0;
@@ -174,7 +170,7 @@ public class SonarServiceImpl implements SonarService{
                 .sslParameters(sslParameters)
                 .build();
     }
-
+    @Override
     public synchronized void updateProgress(int completedTasks) {
         progress = (int) ((double) completedTasks / totalTasks * 100);
     }
@@ -333,7 +329,7 @@ public class SonarServiceImpl implements SonarService{
     }
 
 
-
+    @Override
     public void sonar(List<Sonar> sonars, String cookieSonar, String cookieSonar2, String envv,int a, int b) throws Exception {
         HttpClient client = createHttpClient();
         Map<String, String> headers = new HashMap<>();
@@ -388,12 +384,12 @@ public class SonarServiceImpl implements SonarService{
                     JSONObject condition = conditions.getJSONObject(i);
                     if ("coverage".equals(condition.optString("metric"))) {
                         double actualValue = condition.optDouble("value", Double.NaN);
-                        Double aux = actualValue / 100;
-                        valueList.add(aux);
-                        ValuesSonar valuesSonar = new ValuesSonar();
-                        valuesSonar.setValue(aux);
-                        valuesSonar.setSonar(sonar);
-                        valuesSonarService.createValue(valuesSonar);
+//                        Double aux = actualValue / 100;
+//                        valueList.add(aux);
+//                        ValuesSonar valuesSonar = new ValuesSonar();
+//                        valuesSonar.setValue(aux);
+//                        valuesSonar.setSonar(sonar);
+//                        valuesSonarService.createValue(valuesSonar);
                         return true;
                     }
                 }
@@ -405,7 +401,7 @@ public class SonarServiceImpl implements SonarService{
         valueList.add(-999.9);
         return false;
     }
-
+    @Override
     public synchronized int getProgress() {
         return progress;
     }

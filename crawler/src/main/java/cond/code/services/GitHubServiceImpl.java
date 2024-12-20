@@ -1,10 +1,7 @@
 package cond.code.services;
 
-import cond.code.entities.BlackDuck;
 import cond.code.entities.GitHub;
-import cond.code.entities.Sonar;
 import cond.code.repositories.GitHubRepository;
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -15,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GitHubServiceImpl implements GitHubService{
+public class GitHubServiceImpl implements GitHubService {
 
     @Autowired
     private GitHubRepository githubRepository;

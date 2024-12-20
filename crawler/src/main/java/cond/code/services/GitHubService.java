@@ -1,6 +1,5 @@
 package cond.code.services;
 
-import cond.code.entities.BlackDuck;
 import cond.code.entities.GitHub;
 
 import java.util.List;
