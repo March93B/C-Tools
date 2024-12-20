@@ -406,7 +406,7 @@ public class PrismaCloudService {
                         System.out.println("Conteúdo HTML recebido com sucesso.");
                         Map<String, Integer> vulnerabilities = extractVulnerabilitiesFromHtml(htmlContent);
 
-                        for (String severity : Arrays.asList("High", "Critical")) {
+                        for (String severity : Arrays.asList("Critical", "High")) {
                             resultNum.add(Integer.valueOf(String.valueOf(vulnerabilities.getOrDefault(severity, -999))));
                         }
 
