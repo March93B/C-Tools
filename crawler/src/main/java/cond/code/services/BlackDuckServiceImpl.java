@@ -312,7 +312,16 @@ public class BlackDuckServiceImpl implements BlackDuckService {
                 System.out.println("pt1 "+progress);
             }
             blackDuckDataList = processBlackDucks(blackResult, cookie, cookie2);
-            writeExcel(blackDuckDataList, blackDucks,envv,b);
+            try {
+                writeExcel(blackDuckDataList, blackDucks,envv,b);
+            } catch (Exception e) {
+                try{
+                    Thread.sleep(3000);
+
+                }catch (InterruptedException aa){
+                    aa.printStackTrace();
+                }
+            }
         }
         if(a==2){
             for (int i = 0; i < blackDucks.size(); i++) {
