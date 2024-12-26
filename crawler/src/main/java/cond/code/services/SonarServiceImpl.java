@@ -384,8 +384,8 @@ public class SonarServiceImpl implements SonarService{
                     JSONObject condition = conditions.getJSONObject(i);
                     if ("coverage".equals(condition.optString("metric"))) {
                         double actualValue = condition.optDouble("value", Double.NaN);
-//                        Double aux = actualValue / 100;
-//                        valueList.add(aux);
+                        Double aux = actualValue / 100;
+                        valueList.add(aux);
 //                        ValuesSonar valuesSonar = new ValuesSonar();
 //                        valuesSonar.setValue(aux);
 //                        valuesSonar.setSonar(sonar);

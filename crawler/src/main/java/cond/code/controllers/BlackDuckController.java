@@ -103,7 +103,6 @@ public class BlackDuckController {
         }else{
             blackDucks = blackDuckService.getBlackDucks();
         }
-        System.out.println("Received envv: " + envv);
 
         if(choice==1){
             ExecutorService executor = Executors.newSingleThreadExecutor();
