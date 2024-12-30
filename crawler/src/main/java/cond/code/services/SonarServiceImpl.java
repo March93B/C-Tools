@@ -1,10 +1,9 @@
 
 package cond.code.services;
 
-import cond.code.controllers.SonarController;
 import cond.code.entities.Sonar;
-import cond.code.entities.ValuesSonar;
 import cond.code.repositories.SonarRepository;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONArray;
@@ -13,19 +12,23 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.http.client.methods.*;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -343,7 +346,7 @@ public class SonarServiceImpl implements SonarService{
                 totalTasks = sonars.size();
                 updateProgress(i + 1);
             }
-            updateExcelFile(sonars, valueList, envv,a);
+            updateExcelOnline(sonars, valueList, envv,a);
 
         }
         if(a == 2){
@@ -354,7 +357,7 @@ public class SonarServiceImpl implements SonarService{
                 updateProgress(i + 1);
 
             }
-            updateExcelFile(sonars, valueList, envv,b);
+            updateExcelOnline(sonars, valueList, envv,b);
 
         }
 
@@ -405,89 +408,144 @@ public class SonarServiceImpl implements SonarService{
     public synchronized int getProgress() {
         return progress;
     }
-    private void updateExcelFile(List<Sonar> sonars, List<Double> valueList, String env,int b) throws IOException {
-        File file = new File(FILE_NAME);
+
+//    private void updateExcelFile(List<Sonar> sonars, List<Double> valueList, String env,int b) throws IOException {
+//        File file = new File(FILE_NAME);
+//        Workbook workbook;
+//        Sheet sheet;
+//
+//        boolean fileExists = file.exists();
+//        if (fileExists) {
+//            try (FileInputStream fileInputStream = new FileInputStream(file)) {
+//                workbook = new XSSFWorkbook(fileInputStream);
+//                sheet = workbook.getSheet(SHEET_NAME);
+//                if (sheet == null) {
+//                    sheet = workbook.createSheet(SHEET_NAME);
+//                }
+//            }
+//        } else {
+//            workbook = new XSSFWorkbook();
+//            sheet = workbook.createSheet(SHEET_NAME);
+//        }
+//
+//        int lastRowNum = sheet.getLastRowNum();
+//        int startRow = lastRowNum + 2;
+//
+//        Row dateRow = sheet.createRow(startRow);
+//        LocalDate date = LocalDate.now();
+//
+//        Row headerRow = sheet.createRow(startRow + 1);
+//        int colNum = 0;
+//
+//        if(b==1){
+//            dateRow.createCell(0).setCellValue(env.toLowerCase() + " " + date);
+//
+//            for (int i = 0; i < sonars.size(); i++) {
+//                headerRow.createCell(colNum).setCellValue(sonars.get(i).getNameApi()+" "+versionsExcel.get(i));
+//                colNum++;
+//            }
+//
+//        }
+//        if(b==2){
+//            dateRow.createCell(0).setCellValue("PROD" + " " + date);
+//            for (Sonar sonar : sonars) {
+//                headerRow.createCell(colNum).setCellValue(sonar.getNameApi()+" "+sonar.getReleasesPROD());
+//                colNum++;
+//            }
+//
+//        }
+//        if(b==3){
+//            dateRow.createCell(0).setCellValue("UAT" + " " + date);
+//
+//            for (Sonar sonar : sonars) {
+//                headerRow.createCell(colNum).setCellValue(sonar.getNameApi()+" "+sonar.getReleasesUAT());
+//                colNum++;
+//            }
+//
+//        }
+//
+//        Row dataRow = sheet.createRow(startRow + 2);
+//
+//        CellStyle percentageStyle = workbook.createCellStyle();
+//        DataFormat format = workbook.createDataFormat();
+//        percentageStyle.setDataFormat(format.getFormat("0.00%"));
+//
+//        for (int i = 0; i < colNum; i++) {
+//            Cell cell = dataRow.createCell(i);
+//            if (i < valueList.size()) {
+//                double value = valueList.get(i);
+//                if (Double.isNaN(value)) {
+//                    cell.setCellValue("error");
+//                } else {
+//                    cell.setCellValue(value);
+//                    cell.setCellStyle(percentageStyle);
+//                }
+//            } else {
+//                cell.setCellValue("error");
+//            }
+//        }
+//
+//        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+//            sheet.autoSizeColumn(i);
+//        }
+//
+//        try (FileOutputStream fileOut = new FileOutputStream(file)) {
+//            workbook.write(fileOut);
+//        } finally {
+//            workbook.close();
+//        }
+//    }
+    private static final String FILE_URL = "https://graph.microsoft.com/v1.0/me/drive/root:/Caminho/Para/Seu/Arquivo.xlsx:/content";
+    private static final String ACCESS_TOKEN = "seu_token_aqui";
+
+    public static void updateExcelOnline(List<Sonar> sonars, List<Double> valueList, String env, int b) throws IOException {
         Workbook workbook;
-        Sheet sheet;
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet getRequest = new HttpGet(FILE_URL);
+        getRequest.setHeader("Authorization", "Bearer " + ACCESS_TOKEN);
 
-        boolean fileExists = file.exists();
-        if (fileExists) {
-            try (FileInputStream fileInputStream = new FileInputStream(file)) {
-                workbook = new XSSFWorkbook(fileInputStream);
-                sheet = workbook.getSheet(SHEET_NAME);
-                if (sheet == null) {
-                    sheet = workbook.createSheet(SHEET_NAME);
-                }
-            }
-        } else {
-            workbook = new XSSFWorkbook();
-            sheet = workbook.createSheet(SHEET_NAME);
-        }
+        try (CloseableHttpResponse response = httpClient.execute(getRequest);
+             InputStream inputStream = response.getEntity().getContent()) {
 
-        int lastRowNum = sheet.getLastRowNum();
-        int startRow = lastRowNum + 2;
-
-        Row dateRow = sheet.createRow(startRow);
-        LocalDate date = LocalDate.now();
-
-        Row headerRow = sheet.createRow(startRow + 1);
-        int colNum = 0;
-
-        if(b==1){
-            dateRow.createCell(0).setCellValue(env.toLowerCase() + " " + date);
-
-            for (int i = 0; i < sonars.size(); i++) {
-                headerRow.createCell(colNum).setCellValue(sonars.get(i).getNameApi()+" "+versionsExcel.get(i));
-                colNum++;
+            workbook = new XSSFWorkbook(inputStream);
+            Sheet sheet = workbook.getSheet("Sheet1");
+            if (sheet == null) {
+                sheet = workbook.createSheet("Sheet1");
             }
 
-        }
-        if(b==2){
-            dateRow.createCell(0).setCellValue("PROD" + " " + date);
-            for (Sonar sonar : sonars) {
-                headerRow.createCell(colNum).setCellValue(sonar.getNameApi()+" "+sonar.getReleasesPROD());
-                colNum++;
-            }
+            int lastRowNum = sheet.getLastRowNum();
+            int startRow = lastRowNum + 1;
 
-        }
-        if(b==3){
-            dateRow.createCell(0).setCellValue("UAT" + " " + date);
+            Row dateRow = sheet.createRow(startRow);
+            dateRow.createCell(0).setCellValue(env + " - Atualizado");
+
+            Row headerRow = sheet.createRow(startRow + 1);
+            int colNum = 0;
 
             for (Sonar sonar : sonars) {
-                headerRow.createCell(colNum).setCellValue(sonar.getNameApi()+" "+sonar.getReleasesUAT());
+                headerRow.createCell(colNum).setCellValue(sonar.getNameApi());
                 colNum++;
             }
 
-        }
-
-        Row dataRow = sheet.createRow(startRow + 2);
-
-        CellStyle percentageStyle = workbook.createCellStyle();
-        DataFormat format = workbook.createDataFormat();
-        percentageStyle.setDataFormat(format.getFormat("0.00%"));
-
-        for (int i = 0; i < colNum; i++) {
-            Cell cell = dataRow.createCell(i);
-            if (i < valueList.size()) {
-                double value = valueList.get(i);
-                if (Double.isNaN(value)) {
-                    cell.setCellValue("error");
-                } else {
-                    cell.setCellValue(value);
-                    cell.setCellStyle(percentageStyle);
-                }
-            } else {
-                cell.setCellValue("error");
+            Row dataRow = sheet.createRow(startRow + 2);
+            for (int i = 0; i < colNum; i++) {
+                dataRow.createCell(i).setCellValue(valueList.get(i));
             }
-        }
 
-        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
-            sheet.autoSizeColumn(i);
-        }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
 
-        try (FileOutputStream fileOut = new FileOutputStream(file)) {
-            workbook.write(fileOut);
-        } finally {
+            HttpPut putRequest = new HttpPut(FILE_URL);
+            putRequest.setHeader("Authorization", "Bearer " + ACCESS_TOKEN);
+            putRequest.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            putRequest.setEntity(new ByteArrayEntity(outputStream.toByteArray(), ContentType.APPLICATION_OCTET_STREAM));
+
+            try (CloseableHttpResponse uploadResponse = httpClient.execute(putRequest)) {
+                if (uploadResponse.getStatusLine().getStatusCode() != 200) {
+                    throw new IOException("Falha no upload do arquivo: " + uploadResponse.getStatusLine().getReasonPhrase());
+                }
+            }
+
             workbook.close();
         }
     }
