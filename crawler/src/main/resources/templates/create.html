@@ -135,23 +135,58 @@
 
 <script th:src="@{/bootstrap.bundle.min.js}"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const toolsSelect = document.getElementById('tools');
         const urlInput = document.getElementById('urlApi');
+        const editablePartOrg = 'YOUR_ORG_HERE';
+        const editablePartAPI = 'YOUR_API_HERE';
+        const fixedPart = "/api/measures/component?metrics&component=";
+        const fixedEnd = "&metricKeys=coverage=branch=";
+        let baseURL = 'https://sonar.';
 
-        toolsSelect.addEventListener('change', function() {
+        function clearUrlInput() {
+            urlInput.value = "";
+            urlInput.removeEventListener('input', handleSonarInput);
+            urlInput.removeEventListener('keydown', handleSonarKeydown);
+        }
+
+        function handleSonarInput() {
+            const regex = /https:\/\/sonar\.(.*?)\.net\/api\/measures\/component\?metrics&component=(.*?)&metricKeys=coverage=branch=/;
+            const match = urlInput.value.match(regex);
+
+            if (match) {
+                const org = match[1];
+                const api = match[2];
+                const updatedURL = `${baseURL}${org}.net${fixedPart}${api}${fixedEnd}`;
+
+                if (!urlInput.value.startsWith(updatedURL)) {
+                    urlInput.value = updatedURL;
+                }
+            } else {
+                urlInput.value = `${baseURL}${editablePartOrg}.net${fixedPart}${editablePartAPI}${fixedEnd}`;
+            }
+        }
+
+        function handleSonarKeydown(event) {
+            const fixedLength = `${baseURL}${editablePartOrg}.net${fixedPart}${editablePartAPI}${fixedEnd}`.length;
+            if (urlInput.selectionStart >= fixedLength) {
+                event.preventDefault();
+            }
+        }
+
+        toolsSelect.addEventListener('change', function () {
             const selectedTool = toolsSelect.value;
-            let newValue;
+            let fullURL = `${baseURL}${editablePartOrg}.net${fixedPart}${editablePartAPI}${fixedEnd}`;
 
             if (selectedTool === 'sonar') {
-                newValue = "pre-filled-value";
-            } else if (selectedTool === 'blackduck') {
-                newValue = "";
-            } else {
-                newValue = "";
-            }
+                urlInput.value = fullURL;
 
-            urlInput.value = newValue;
+                urlInput.addEventListener('input', handleSonarInput);
+                urlInput.addEventListener('keydown', handleSonarKeydown);
+
+            } else if (selectedTool === "blackduck" || selectedTool === "github") {
+                clearUrlInput();
+            }
         });
     });
 </script>
