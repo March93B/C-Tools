@@ -19,10 +19,6 @@ public class Sonar {
     @Column(name = "type")
     private String type;
 
-    @OneToMany(mappedBy = "sonar")
-    @JsonManagedReference
-    private List<ValuesSonar> valuesSonar;
-
     @Column(name = "releasesPROD")
     private String releasesPROD ;
 
@@ -101,12 +97,4 @@ public class Sonar {
         this.urlApi = urlApi;
     }
 
-
-    public List<ValuesSonar> getValuesSonar() {
-        return valuesSonar;
-    }
-
-    public void setValuesSonar(List<ValuesSonar> valuesSonar) {
-        this.valuesSonar = valuesSonar;
-    }
 }

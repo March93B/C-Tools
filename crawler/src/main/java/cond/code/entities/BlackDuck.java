@@ -28,16 +28,13 @@ public class BlackDuck {
     @Column(name = "activeProd")
     private Boolean activeProd;
 
-    @OneToMany(mappedBy = "blackDuck")
-    private List<ValuesBlackDuck> valuesBlackDuck ;
 
-    public BlackDuck(Integer idBlackDuck, String nameApi, String urlApi, String type, List<ValuesBlackDuck> valuesBlackDuck,
+    public BlackDuck(Integer idBlackDuck, String nameApi, String urlApi, String type,
                      String releasesPROD, String releasesUAT,Boolean activeProd) {
         this.idBlackDuck = idBlackDuck;
         this.nameApi = nameApi;
         this.urlApi = urlApi;
         this.type = type;
-        this.valuesBlackDuck = valuesBlackDuck;
         this.releasesPROD = releasesPROD;
         this.releasesUAT = releasesUAT;
         this.activeProd = activeProd;
@@ -103,13 +100,4 @@ public class BlackDuck {
         this.urlApi = urlApi;
     }
 
-
-
-    public List<ValuesBlackDuck> getValuesBlackDuck() {
-        return valuesBlackDuck;
-    }
-
-    public void setValuesBlackDuck(List<ValuesBlackDuck> valuesBlackDuck) {
-        this.valuesBlackDuck = valuesBlackDuck;
-    }
 }
