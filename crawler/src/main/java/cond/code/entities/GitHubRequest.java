@@ -2,8 +2,8 @@ package cond.code.entities;
 
 
 public class GitHubRequest {
-    private String Cookie;
-    private String Token;
+    private String cookie;
+    private String token;
     private String env;
     private int choice;
     private int releases;
@@ -42,18 +42,18 @@ public class GitHubRequest {
     }
 
     public String getCookie() {
-        return Cookie;
+        return cookie;
     }
 
     public void setCookie(String cookie) {
-        Cookie = cookie;
+        cookie = cookie;
     }
 
     public String getToken() {
-        return Token;
+        return token;
     }
 
     public void setToken(String token) {
-        Token = token;
+        token = token;
     }
 }
