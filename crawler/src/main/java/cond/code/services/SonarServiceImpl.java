@@ -88,6 +88,7 @@ public class SonarServiceImpl implements SonarService{
 
             if (sonar.getReleasesPROD() != null && !sonar.getReleasesPROD().isEmpty()) {
                 existingSonar.setReleasesPROD(sonar.getReleasesPROD());
+
             } else if (existingSonar.getReleasesPROD() == null) {
                 existingSonar.setReleasesPROD(existingSonar.getReleasesPROD());
             }
