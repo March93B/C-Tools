@@ -141,7 +141,7 @@
         const editablePartOrg = 'YOUR_ORG_HERE';
         const editablePartAPI = 'YOUR_API_HERE';
         const fixedPart = "/api/measures/component?metrics&component=";
-        const fixedEnd = "&metricKeys=coverage=branch=";
+        const fixedEnd = "&metricKeys=coverage&branch=";
         let baseURL = 'https://sonar.';
 
         function clearUrlInput() {
@@ -151,7 +151,7 @@
         }
 
         function handleSonarInput() {
-            const regex = /https:\/\/sonar\.(.*?)\.net\/api\/measures\/component\?metrics&component=(.*?)&metricKeys=coverage=branch=/;
+            const regex = /https:\/\/sonar\.(.*?)\.net\/api\/measures\/component\?metrics&component=(.*?)&metricKeys=coverage&branch=/;
             const match = urlInput.value.match(regex);
 
             if (match) {
