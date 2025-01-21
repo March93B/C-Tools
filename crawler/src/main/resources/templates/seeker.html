@@ -4,22 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prisma</title>
+    <title>Blackduck</title>
     <link th:href="@{/index.css}" rel="stylesheet" type="text/css" media="all">
     <link th:href="@{/app.css}" rel="stylesheet" type="text/css" media="all">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-        .input-group-text {
-            cursor: pointer;
-            color: green;
-        }
-
-        .input-group {
-            display: flex;
-            align-items: center;
-        }
-            .tooltip {
+        .tooltip {
             position: absolute;
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
@@ -32,6 +23,15 @@
             word-wrap: break-word;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
+        }
+        .input-group-text {
+            cursor: pointer;
+            color: green;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
         }
 
         .tooltip.show {
@@ -222,10 +222,10 @@
                             <a class="nav-link" href="blackduck">BlackDuck</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="seeker">Seeker</a>
+                            <a class="nav-link" href="#">Seeker</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">PrismaCloud</a>
+                            <a class="nav-link" href="prisma">PrismaCloud</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="codeql">CodeQL</a>
@@ -246,16 +246,16 @@
         </nav>
         <main>
             <div class="py-5 text-center">
-                <h2>PrismaCloud</h2>
+                <h2>Seeker</h2>
                 <p class="lead">Execute o crawler, consulte e delete API's</p>
             </div>
             <div class="d-flex justify-content-center">
                 <div class="col-md-4 mb-4 justify-content-center">
                     <label class="btn btn btn-primary ">
-                        <input type="radio" name="options" id="option1" autocomplete="off" > Todos
+                        <input type="radio" name="options" id="option1" autocomplete="off"> Todos
                     </label>
                     <label class="btn btn-primary ">
-                        <input type="radio" name="options" id="option2" autocomplete="off" disabled> Front
+                        <input type="radio" name="options" id="option2" autocomplete="off" disabled > Front
                     </label>
                     <label class="btn btn-primary ">
                         <input type="radio" name="options" id="option3" autocomplete="off" disabled> Back
@@ -272,30 +272,24 @@
             </div>
             <form id="apiForm" method="get" novalidate>
                 <div class="row g-5">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label">Cookie</label>
                         <input type="text" class="form-control" id="cookie" placeholder="cookie" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">GitHub Token</label>
-                        <input type="text" class="form-control" id="token" placeholder="Token :D"
-                               required>
-                    </div>
-                    <div class="col-md-3">
                         <label class="form-label">Env</label>
-
                         <select class="form-select" id="enviroment" name="enviroment" required>
                             <option value="">Selecione...</option>
                             <option value="main">Main</option>
-                            <option value="releases/">Latest Releases</option>
+                            <option value="refs/heads/releases/">Latest Releases</option>
                             <option value="Releases/UAT">Releases/UAT</option>
                             <option value="Releases/PROD">Releases/PROD</option>
 
                         </select>
-<!--                        <input type="text" class="form-control" id="env" placeholder="releases/"-->
-<!--                               required>-->
+                        <!--                            <input type="text" class="form-control" id="enviroment" placeholder="Release 1.4.0..."-->
+                        <!--                                required>-->
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <button class="w-100 btn btn-primary btn-lg mt-4" id="startProcessButton"
                                 type="submit">Executar Crawler</button>
                     </div>
@@ -312,9 +306,8 @@
                     <tr>
                         <th class="col-id" scope="col">#</th>
                         <th class="col-first" scope="col">Nome da Api/Front</th>
-                        <th class="col-last" scope="col">Url do GitHub</th>
+                        <th class="col-last" scope="col">Url do Blackduck</th>
                         <th class="col-last" scope="col">back/front</th>
-
                         <th class="col-last" scope="col">Releases/PROD</th>
                         <th class="col-last" scope="col">Releases/UAT</th>
                         <th class="col-last" scope="col">Disponível em PROD</th>
@@ -322,9 +315,9 @@
                     </tr>
                     </thead>
                     <tbody id="tableBody">
-                    <tr th:each="github : ${githubs}">
+                    <tr th:each="blackduck : ${blackducks}">
                         <th class="col-id" scope="row">
-                            <button class="buttonL delete-button" th:data-id="${github.idGit}">
+                            <button class="buttonL delete-button" th:data-id="${blackduck.idBlackDuck}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#a60808"
                                      class="bi bi-trash" viewBox="0 0 16 16">
                                     <path
@@ -332,36 +325,34 @@
                                 </svg>
                             </button>
                         </th>
-                        <td class="col-env" th:text="${github.nameApi}"></td>
-                        <td class="col-env" th:text="${github.urlApi}"></td>
-                        <td class="col-env" th:text="${github.type}"></td>
-
+                        <td class="col-env" th:text="${blackduck.nameApi}"></td>
+                        <td class="col-env" th:text="${blackduck.urlApi}"></td>
+                        <td class="col-env" th:text="${blackduck.type}"></td>
                         <td class="col-env">
                             <div class="input-group">
                                 <input type="text" class="form-control" style="height: 30px"
-                                       th:placeholder="${github.releasesPROD != null ? github.releasesPROD : ''}"
-                                       th:value="${github.releasesPROD != null ? github.releasesPROD : ''}"
+                                       th:placeholder="${blackduck.releasesPROD != null ? blackduck.releasesPROD : ''}"
+                                       th:value="${blackduck.releasesPROD != null ? blackduck.releasesPROD : ''}"
                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-                                       th:id="'releasesPROD-' + ${github.idGit}"
+                                       th:id="'releasesPROD-' + ${blackduck.idBlackDuck}"
                                        title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
                                 <span class="input-group-text"
-                                      th:onclick="'updateReleases(' + ${github.idGit} + ')'" >
+                                      th:onclick="'updateReleases(' + ${blackduck.idBlackDuck} + ')'" >
             <i class="bi bi-check-circle"></i>
         </span>
                             </div>
                         </td>
 
-
                         <td class="col-env">
                             <div class="input-group">
                                 <input type="text" class="form-control" style="height: 30px"
-                                       th:placeholder="${github.releasesUAT != null ? github.releasesUAT : ''}"
-                                       th:value="${github.releasesUAT != null ? github.releasesUAT : ''}"
+                                       th:placeholder="${blackduck.releasesUAT != null ? blackduck.releasesUAT : ''}"
+                                       th:value="${blackduck.releasesUAT != null ? blackduck.releasesUAT : ''}"
                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-                                       th:id="'releasesUAT-' + ${github.idGit}"
+                                       th:id="'releasesUAT-' + ${blackduck.idBlackDuck}"
                                        title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
                                 <span class="input-group-text"
-                                      th:onclick="'updateReleases(' + ${github.idGit} + ')'" >
+                                      th:onclick="'updateReleases(' + ${blackduck.idBlackDuck} + ')'" >
             <i class="bi bi-check-circle"></i>
         </span>
                             </div>
@@ -370,15 +361,17 @@
                         <td class="col-env">
                             <div class="input-group">
                                 <div class="form-control">
-                                    <label class="switch">
-                                        <input type="checkbox" id="switch-${github.idGit}"
-                                               th:checked="${github.isActiveProd()}"
-                                               th:onclick="|updateIsActiveProd(${github.idGit}, this.checked)|">
-                                        <span class="slider"></span>
-                                    </label>
+                                <label class="switch">
+                                    <input type="checkbox" id="switch-${blackduck.idBlackDuck}"
+                                           th:checked="${blackduck.isActiveProd()}"
+                                           th:onclick="|updateIsActiveProd(${blackduck.idBlackDuck}, this.checked)|">
+                                    <span class="slider"></span>
+                                </label>
                                 </div>
                             </div>
                         </td>
+
+
                     </tr>
                     </tbody>
                 </table>
@@ -396,7 +389,6 @@
 <script th:src="@{/bootstrap.bundle.min.js}"></script>
 
 <script>
-
     document.getElementById('startProcessButton').addEventListener('click', function(event) {
         const options = document.getElementsByName('options');
         let selected = false;
@@ -411,7 +403,10 @@
         if (!selected) {
             alert('Por favor, selecione uma opção antes de continuar.');
             event.preventDefault();
+            return;
         }
+
+        executeEndpoint(event);
     });
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -429,7 +424,7 @@
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
             const textContent = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
-            const apiType = row.querySelector('td.col-env:last-child').textContent.toLowerCase();
+            const apiType = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
 
             const matchesSearch = textContent.includes(searchInput);
             const matchesOption = selectedOption === 'option1' || apiType === getOptionType(selectedOption);
@@ -437,7 +432,6 @@
             row.style.display = matchesSearch && matchesOption ? '' : 'none';
         });
     }
-
     function getOptionType(optionId) {
         switch (optionId) {
             case 'option1':
@@ -515,7 +509,7 @@
             if (isUpdating) return;
 
             isUpdating = true;
-            fetch('/prisma/progress')
+            fetch('/blackduck/progress')
                 .then(response => response.json())
                 .then(progress => {
 
@@ -550,63 +544,61 @@
                 });
         }
 
-
         const cookieString = document.getElementById('cookie').value;
-        let token = document.getElementById('token').value;
         let env = document.getElementById('enviroment').value;
+        const cookies = cookieString.split(';').map(cookie => cookie.trim());
+        const cookie1 = cookies[0] || 'defaultCookie1';
+        const cookie2 = cookies[1] || 'defaultCookie2';
         let requestData={}
         if(env==="main"){
-             requestData = {
-                cookie: cookieString,
-                env: env,
-                token: token,
-                 choice: 2,
-                 releases:1,
-                 prodOnly:switchV
+            requestData = {
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
+                choice: 1,
+                release:1,
+                prodOnly:switchV
+
             };
         }
-        if(env==="releases/"){
+        if(env==="refs/heads/releases/"){
             requestData = {
-                cookie: cookieString,
-                env: env,
-                token: token,
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
                 choice: 1,
-                releases:0,
+                release:1,
                 prodOnly:switchV
 
             };
         }
         if(env==="releases/PROD"){
             requestData = {
-                cookie: cookieString,
-                env: env,
-                token: token,
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
                 choice: 2,
-                releases:2,
+                release:2,
                 prodOnly:switchV
 
             };
         }
         if(env==="releases/UAT"){
             requestData = {
-                cookie: cookieString,
-                env: env,
-                token: token,
+                cookie: cookie1,
+                cookie2: cookie2,
+                envv: env,
                 choice: 2,
-                releases:3,
+                release:3,
                 prodOnly:switchV
 
             };
         }
-    console.log(requestData)
         if(env === ""){
             alert("selecione uma opção válida de Env")
         }else{
             openModal();
         }
-
-
-
         const postRequest = (endpoint) => {
             fetch(endpoint, {
                 method: 'POST',
@@ -625,15 +617,15 @@
         };
 
         if (selectedOption === "option1") {
-            postRequest('/prisma/exec');
+            postRequest('/blackduck/exeblack');
         }
 
         if (selectedOption === "option2") {
-            postRequest('/prisma/exec');
+            postRequest('/blackduck/exeblack');
         }
 
         if (selectedOption === "option3") {
-            postRequest('/prisma/exec');
+            postRequest('/blackduck/exeblack');
         }
     }
 </script>
@@ -643,10 +635,10 @@
             button.addEventListener('click', (event) => {
                 event.preventDefault();
 
-                const idPrisma = event.currentTarget.getAttribute('data-id');
+                const idBlack = event.currentTarget.getAttribute('data-id');
 
                 if (confirm('Tem certeza de que deseja excluir este item?')) {
-                    fetch(`/prisma/delete/${idPrisma}`, {
+                    fetch(`/blackduck/delete/${idBlack}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -701,6 +693,7 @@
         });
     });
 </script>
+
 <script>
     function updateReleases(id) {
         const releasesInput = document.getElementById('releasesPROD-' + id);
@@ -717,7 +710,7 @@
                 releasesUAT: releaseValue2
             };
 
-            fetch('http://localhost:8080/prisma/' + id, {
+            fetch('http://localhost:8080/blackduck/' + id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -747,10 +740,10 @@
             console.error('Input não encontrado para o ID:', id);
         }
     }
-    function updateIsActiveProd(idGit, isActive) {
+    function updateIsActiveProd(idBlackDuck, isActive) {
 
 
-        fetch(`/prisma/${idGit}`, {
+        fetch(`/blackduck/${idBlackDuck}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -766,6 +759,8 @@
             });
     }
 </script>
+
 </body>
+
 
 </html>
