@@ -447,6 +447,7 @@
             }
         }
     </script>
+
     <script>
         const switchElement = document.getElementById("mySwitch");
         const switchValueDisplay = document.getElementById("switchValue");
@@ -491,8 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
          function openModal() {
              document.getElementById('progressModal').style.display = 'block';
-             progressInterval = setInterval(updateProgress, 1000);
-
+             startProgressMonitoring()
          }
 
          function closeModal() {
@@ -507,6 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
              alert("Processo interrompido devido a falta de resposta")
          }
 
+
          function updateProgress() {
              if (isUpdating) return;
 
@@ -515,13 +516,19 @@ document.addEventListener('DOMContentLoaded', () => {
              if (timeoutId) {
                  clearTimeout(timeoutId);
              }
+
              timeoutId = setTimeout(() => {
                  console.warn("Tempo limite atingido! Fechando modal...");
                  closeModalAndAbort();
              }, 7000);
 
              fetch('/sonar/progress')
-                 .then(response => response.json())
+                 .then(response => {
+                     if (!response.ok) {
+                         throw new Error("Erro na requisição");
+                     }
+                     return response.json();
+                 })
                  .then(progress => {
                      clearTimeout(timeoutId);
                      timeoutId = setTimeout(closeModalAndAbort, 7000);
@@ -529,8 +536,12 @@ document.addEventListener('DOMContentLoaded', () => {
                      const progressValue = document.getElementById('progressValue');
                      const progressBar = document.getElementById('progressBar');
 
-                     progressValue.textContent = progress + '%';
-                     progressBar.style.width = progress + '%';
+                     if (progressValue && progressBar) {
+                         progressValue.textContent = progress + '%';
+                         progressBar.style.width = progress + '%';
+                     } else {
+                         console.error("Elementos de progresso não encontrados!");
+                     }
 
                      if (progress >= 100) {
                          clearInterval(progressInterval);
@@ -541,66 +552,70 @@ document.addEventListener('DOMContentLoaded', () => {
                  })
                  .catch(error => {
                      console.error('Erro ao buscar o progresso:', error);
-                     clearTimeout(timeoutId); // Garante que o timeout não fique ativo após erro
+                     clearTimeout(timeoutId);
                      clearInterval(progressInterval);
                      closeModalAndAbort();
                      isUpdating = false;
                  });
          }
 
-    const cookieString = document.getElementById('cookie').value;
-    let env = document.getElementById('enviroment').value;
-    const cookies = cookieString.split(';').map(cookie => cookie.trim());
-    const cookie1 = cookies[0] || 'defaultCookie1';
-    const cookie2 = cookies[1] || 'defaultCookie2';
-    let requestData={}
-         if(env==="main"){
+         function startProgressMonitoring() {
+             progressInterval = setInterval(updateProgress, 2000);
+         }
+
+         const cookieString = document.getElementById('cookie').value;
+         let env = document.getElementById('enviroment').value;
+         const cookies = cookieString.split(';').map(cookie => cookie.trim());
+         const cookie1 = cookies[0] || 'defaultCookie1';
+         const cookie2 = cookies[1] || 'defaultCookie2';
+         let requestData = {}
+         if (env === "main") {
              requestData = {
                  cookie: cookie1,
                  cookie2: cookie2,
                  envv: env,
                  choice: 1,
-                 release:1,
-                 prodOnly:switchV
+                 release: 1,
+                 prodOnly: switchV
              };
          }
-         if(env==="releases/"){
+         if (env === "releases/") {
              requestData = {
                  cookie: cookie1,
                  cookie2: cookie2,
                  envv: env,
                  choice: 1,
-                 release:1,
-                 prodOnly:switchV
+                 release: 1,
+                 prodOnly: switchV
 
              };
          }
-         if(env==="PROD"){
+         if (env === "PROD") {
              requestData = {
                  cookie: cookie1,
                  cookie2: cookie2,
                  envv: env,
                  choice: 2,
-                 release:2,
-                 prodOnly:switchV
+                 release: 2,
+                 prodOnly: switchV
 
              };
          }
-         if(env==="UAT"){
+         if (env === "UAT") {
              requestData = {
                  cookie: cookie1,
                  cookie2: cookie2,
                  envv: env,
                  choice: 2,
-                 release:3,
-                 prodOnly:switchV
+                 release: 3,
+                 prodOnly: switchV
 
              };
          }
          console.log(requestData)
-         if(env === ""){
+         if (env === "") {
              alert("selecione uma opção válida de Env")
-         }else{
+         } else {
              openModal();
          }
          const postRequest = (endpoint) => {
@@ -632,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
              postRequest('/sonar/exesonar/back');
          }
      }
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
