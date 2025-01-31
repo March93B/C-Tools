@@ -474,96 +474,83 @@
      let selectedOption = 'todos';
 
 console.log(selectedOption);
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('input[name="options"]').forEach(radio => {
-        radio.addEventListener('change', (event) => {
-            selectedOption = event.target.id;
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input[name="options"]').forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    selectedOption = event.target.id;
+                });
+            });
+
+            document.getElementById('apiForm').addEventListener('submit', executeEndpoint);
         });
-    });
 
-    document.getElementById('apiForm').addEventListener('submit', executeEndpoint);
-});
+        function executeEndpoint(event) {
+            event.preventDefault();
 
-     function executeEndpoint(event) {
-         event.preventDefault();
-         let progressInterval;
-         let timeoutId;
-         let isUpdating = false;
+            let progressInterval;
+            let lastProgress = null;
+            let inactivityTimeout;
 
-         function openModal() {
-             document.getElementById('progressModal').style.display = 'block';
-             startProgressMonitoring()
-         }
+            function openModal() {
+                document.getElementById('progressModal').style.display = 'block';
+                startProgressMonitoring();
+            }
 
-         function closeModal() {
-             document.getElementById('progressModal').style.display = 'none';
-             clearInterval(progressInterval);
-             clearTimeout(timeoutId);
-         }
+            function closeModal() {
+                document.getElementById('progressModal').style.display = 'none';
+                clearInterval(progressInterval);
+                clearTimeout(inactivityTimeout);
+            }
 
-         function closeModalAndAbort() {
-             closeModal();
-             console.log("Processo interrompido devido a falta de resposta");
-             alert("Processo interrompido devido a falta de resposta")
-         }
+            function closeModalAndAbort() {
+                closeModal();
+                console.log("Erro: a barra de progresso ficou parada por 5 segundos!");
+                alert("Erro: o processo parou de responder.");
+            }
 
+            function updateProgress() {
+                fetch('/sonar/progress')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Erro na requisição");
+                        }
+                        return response.json();
+                    })
+                    .then(progress => {
+                        const progressValue = document.getElementById('progressValue');
+                        const progressBar = document.getElementById('progressBar');
 
-         function updateProgress() {
-             if (isUpdating) return;
+                        if (progressValue && progressBar) {
+                            progressValue.textContent = progress + '%';
+                            progressBar.style.width = progress + '%';
+                        } else {
+                            console.error("Elementos de progresso não encontrados!");
+                        }
 
-             isUpdating = true;
+                        if (progress !== lastProgress) {
+                            lastProgress = progress;
 
-             if (timeoutId) {
-                 clearTimeout(timeoutId);
-             }
+                            clearTimeout(inactivityTimeout);
+                            inactivityTimeout = setTimeout(closeModalAndAbort, 5000);
+                        }
 
-             timeoutId = setTimeout(() => {
-                 console.warn("Tempo limite atingido! Fechando modal...");
-                 closeModalAndAbort();
-             }, 7000);
+                        if (progress >= 100) {
+                            clearInterval(progressInterval);
+                            closeModal();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao buscar o progresso:', error);
+                        closeModalAndAbort();
+                    });
+            }
 
-             fetch('/sonar/progress')
-                 .then(response => {
-                     if (!response.ok) {
-                         throw new Error("Erro na requisição");
-                     }
-                     return response.json();
-                 })
-                 .then(progress => {
-                     clearTimeout(timeoutId);
-                     timeoutId = setTimeout(closeModalAndAbort, 7000);
+            function startProgressMonitoring() {
+                lastProgress = null;
+                progressInterval = setInterval(updateProgress, 2000);
+            }
 
-                     const progressValue = document.getElementById('progressValue');
-                     const progressBar = document.getElementById('progressBar');
-
-                     if (progressValue && progressBar) {
-                         progressValue.textContent = progress + '%';
-                         progressBar.style.width = progress + '%';
-                     } else {
-                         console.error("Elementos de progresso não encontrados!");
-                     }
-
-                     if (progress >= 100) {
-                         clearInterval(progressInterval);
-                         closeModal();
-                     }
-
-                     isUpdating = false;
-                 })
-                 .catch(error => {
-                     console.error('Erro ao buscar o progresso:', error);
-                     clearTimeout(timeoutId);
-                     clearInterval(progressInterval);
-                     closeModalAndAbort();
-                     isUpdating = false;
-                 });
-         }
-
-         function startProgressMonitoring() {
-             progressInterval = setInterval(updateProgress, 2000);
-         }
-
-         const cookieString = document.getElementById('cookie').value;
+            const cookieString = document.getElementById('cookie').value;
          let env = document.getElementById('enviroment').value;
          const cookies = cookieString.split(';').map(cookie => cookie.trim());
          const cookie1 = cookies[0] || 'defaultCookie1';
