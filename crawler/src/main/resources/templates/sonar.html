@@ -511,16 +511,21 @@ document.addEventListener('DOMContentLoaded', () => {
              if (isUpdating) return;
 
              isUpdating = true;
+
+             if (timeoutId) {
+                 clearTimeout(timeoutId);
+             }
+             timeoutId = setTimeout(() => {
+                 console.warn("Tempo limite atingido! Fechando modal...");
+                 closeModalAndAbort();
+             }, 7000);
+
              fetch('/sonar/progress')
                  .then(response => response.json())
                  .then(progress => {
-
-                     if (timeoutId) {
-                         clearTimeout(timeoutId);
-                     }
-
+                     clearTimeout(timeoutId);
                      timeoutId = setTimeout(closeModalAndAbort, 7000);
-                     console.log(timeoutId)
+
                      const progressValue = document.getElementById('progressValue');
                      const progressBar = document.getElementById('progressBar');
 
@@ -531,10 +536,12 @@ document.addEventListener('DOMContentLoaded', () => {
                          clearInterval(progressInterval);
                          closeModal();
                      }
+
                      isUpdating = false;
                  })
                  .catch(error => {
                      console.error('Erro ao buscar o progresso:', error);
+                     clearTimeout(timeoutId); // Garante que o timeout não fique ativo após erro
                      clearInterval(progressInterval);
                      closeModalAndAbort();
                      isUpdating = false;
