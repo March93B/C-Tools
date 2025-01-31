@@ -222,7 +222,7 @@
                             <a class="nav-link" href="blackduck">BlackDuck</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="seeker">Seeker</a>
+                            <a class="nav-link" href="#">Seeker(WIP)</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="prisma">PrismaCloud</a>
@@ -418,34 +418,34 @@
         document.getElementById('searchInput').addEventListener('input', filterTable);
     });
 
+
+
     function filterTable() {
         const searchInput = document.getElementById('searchInput').value.toLowerCase();
-        const selectedOption = document.querySelector('input[name="options"]:checked').id;
+        const selectedRadio = document.querySelector('input[name="options"]:checked');
+        const selectedOption = selectedRadio ? selectedRadio.id : null;
         const rows = document.querySelectorAll('#tableBody tr');
 
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
             const textContent = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
-            const apiType = row.querySelector('td.col-env:last-child').textContent.toLowerCase();
+            const apiTypeCell = row.querySelector('td:nth-child(4)');
+
+            const apiType = apiTypeCell ? apiTypeCell.textContent.toLowerCase() : "";
 
             const matchesSearch = textContent.includes(searchInput);
-            const matchesOption = selectedOption === 'option1' || apiType === getOptionType(selectedOption);
+            const matchesOption = !selectedOption || selectedOption === 'option1' || apiType === getOptionType(selectedOption);
 
             row.style.display = matchesSearch && matchesOption ? '' : 'none';
         });
     }
 
-    function getOptionType(optionId) {
-        switch (optionId) {
-            case 'option1':
-                return '';
-            case 'option2':
-                return 'front';
-            case 'option3':
-                return 'back';
-            default:
-                return '';
-        }
+    function getOptionType(option) {
+        const mapping = {
+            'option2': 'back',
+            'option3': 'front'
+        };
+        return mapping[option] || '';
     }
 </script>
 <script>
@@ -486,67 +486,69 @@
 
     function executeEndpoint(event) {
         event.preventDefault();
+
         let progressInterval;
-        let timeoutId;
-        let isUpdating = false;
+        let lastProgress = null;
+        let inactivityTimeout;
 
         function openModal() {
             document.getElementById('progressModal').style.display = 'block';
-            progressInterval = setInterval(updateProgress, 1000);
-
+            startProgressMonitoring();
         }
 
         function closeModal() {
             document.getElementById('progressModal').style.display = 'none';
             clearInterval(progressInterval);
-            clearTimeout(timeoutId);
+            clearTimeout(inactivityTimeout);
         }
 
         function closeModalAndAbort() {
             closeModal();
-            console.log("Processo interrompido devido a falta de resposta");
-            alert("Processo interrompido devido a falta de resposta")
+            console.log("Erro: a barra de progresso ficou parada por 5 segundos!");
+            alert("Erro: o processo parou de responder.");
         }
 
         function updateProgress() {
-            if (isUpdating) return;
-
-            isUpdating = true;
-            fetch('/codeql/progress')
-                .then(response => response.json())
-                .then(progress => {
-
-                    if (timeoutId) {
-                        clearTimeout(timeoutId);
+            fetch('/prisma/progress')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Erro na requisição");
                     }
-
-                    timeoutId = setTimeout(closeModalAndAbort, 7000);
-                    console.log(timeoutId)
+                    return response.json();
+                })
+                .then(progress => {
                     const progressValue = document.getElementById('progressValue');
                     const progressBar = document.getElementById('progressBar');
 
-                    progressValue.textContent = progress + '%';
-                    progressBar.style.width = progress + '%';
+                    if (progressValue && progressBar) {
+                        progressValue.textContent = progress + '%';
+                        progressBar.style.width = progress + '%';
+                    } else {
+                        console.error("Elementos de progresso não encontrados!");
+                    }
+
+                    if (progress !== lastProgress) {
+                        lastProgress = progress;
+
+                        clearTimeout(inactivityTimeout);
+                        inactivityTimeout = setTimeout(closeModalAndAbort, 5000);
+                    }
 
                     if (progress >= 100) {
                         clearInterval(progressInterval);
-                        if (progress >= 100) {
-                            clearInterval(progressInterval);
-                            setTimeout(function() {
-                                closeModal();
-                            }, 3000);
-                        }
+                        closeModal();
                     }
-                    isUpdating = false;
                 })
                 .catch(error => {
                     console.error('Erro ao buscar o progresso:', error);
-                    clearInterval(progressInterval);
                     closeModalAndAbort();
-                    isUpdating = false;
                 });
         }
 
+        function startProgressMonitoring() {
+            lastProgress = null;
+            progressInterval = setInterval(updateProgress, 2000);
+        }
 
         const cookieString = document.getElementById('cookie').value;
         let token = document.getElementById('token').value;
