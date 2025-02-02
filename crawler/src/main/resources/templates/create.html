@@ -57,13 +57,13 @@
                             <a class="nav-link" href="codeql">CodeQL</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Cadastrar API's</a>
+                            <a class="nav-link" href="#">Register APIs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="how">Como usar</a>
+                            <a class="nav-link" href="how">How to use</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="shutdownServer()">Desligar servidor</a>
+                            <a class="nav-link" href="#" onclick="shutdownServer()">Shutdown</a>
                         </li>
                     </ul>
                 </div>
@@ -71,37 +71,37 @@
         </nav>
         <main>
             <div class="py-5 text-center">
-                <h2>Cadastro de API's</h2>
-                <p class="lead">Preencha o formulário para cadastrar uma nova API</p>
+                <h2>APIs Registration</h2>
+                <p class="lead">Fill out the form to register a new API</p>
             </div>
 
             <div class="row g-5">
                 <div class="col-md-5 col-lg-4 order-md-first justify-content-between align-items-center">
                     <h5 class="align-items-center mb-3">
-                        <span class="text-primary">Informações adicionais</span>
+                        <span class="text-primary">Additional information</span>
                     </h5>
                     <div class="tutorial">
                         <div class="text-hint">
-                            No campo "nome da API", você poderá colocar da forma que quiser.<br><br>
-                            Em Ferramenta, selecione a ferramenta na qual a API será cadastrada.<br><br>
-                            Caso a ferramenta seja blackduck, cadastre a URL do repositório para fazer a busca ampla.
+                            In the 'API Name' field, you must enter the API name exactly as it appears on GitHub.<br><br>
+                            The 'GitHub' option in tools is the same for PrismaCloud and CodeQL.<br><br>
+                            If the tool is BlackDuck, remember to register it as indicated on the 'How to use' page to perform a broad search.
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-7 col-lg-8">
-                    <h4 class="mb-3">Informações</h4>
+                    <h4 class="mb-3">Fields</h4>
                     <form id="apiForm" method="post" novalidate>
                         <div class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label">Nome da API</label>
+                                <label class="form-label">API name</label>
                                 <input type="text" class="form-control" id="nameApi" name="nameApi" placeholder="" required>
                             </div>
 
                             <div class="col-md-2">
-                                <label class="form-label">Ferramenta</label>
+                                <label class="form-label">Tools</label>
                                 <select class="form-select" id="tools" name="tools" required>
-                                    <option value="">Selecione...</option>
+                                    <option value="">Select...</option>
                                     <option value="sonar">SonarQube</option>
                                     <option value="blackduck">BlackDuck</option>
                                     <option value="github">GitHub</option>
@@ -109,28 +109,28 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label">Tipo</label>
+                                <label class="form-label">Type</label>
                                 <select class="form-select" id="tipo" name="tipo" required>
-                                    <option value="">Selecione...</option>
+                                    <option value="">Select...</option>
                                     <option value="front">Front</option>
                                     <option value="back">Back</option>
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label for="urlApi" class="form-label">Url da API <span class="text-muted">(De acordo com a ferramenta)</span></label>
+                                <label for="urlApi" class="form-label">API URL <span class="text-muted">(According to the tool)</span></label>
                                 <input type="text" class="form-control" id="urlApi" name="urlApi" value="" >
                             </div>
                         </div>
-                        <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">Salvar Informações</button>
+                        <button class="w-100 btn btn-primary btn-lg mt-5" type="submit">Save </button>
                     </form>
                 </div>
             </div>
         </main>
 
         <footer class="my-5 pt-5 text-muted text-center text-small">
-            <p class="mb-1">2024 Crawler</p>
+            <p class="mb-1">2025 Crawler</p>
             <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Como usar</a></li>
+                <li class="list-inline-item"><a href="how">How to use</a></li>
             </ul>
         </footer>
     </div>
@@ -208,9 +208,19 @@
 
         const tools = document.getElementById('tools').value;
         const tipo = document.getElementById('tipo').value;
-
+        const nameAPI = document.getElementById('nameApi').value
+        const urlAPI = document.getElementById('urlApi').value
 
         let formAction = '';
+        if(nameAPI===""){
+            alert('Please fill in the API name field')
+
+        }
+        else if(urlAPI===""){
+            alert('Please fill in the API URL field')
+
+        }else{
+
         if (tools === 'blackduck' && tipo === 'back') {
             formAction = '/postblack';
         } else if (tools === 'blackduck' && tipo === 'front') {
@@ -224,9 +234,11 @@
         } else if (tools === 'github' && tipo === 'front') {
             formAction = '/git/front';
         } else {
-            alert('Por favor, selecione uma ferramenta.');
+            alert('Please select a tool.');
             return;
         }
+        }
+
 
         fetch(formAction, {
             method: 'POST',
@@ -237,15 +249,15 @@
         })
             .then(response => {
                 if (response.ok) {
-                    alert('Cadastro realizado com sucesso!');
+                    alert('Registration completed successfully!');
                     this.reset();
                 } else {
-                    alert('Ocorreu um erro ao cadastrar a API.');
+                    alert('An error occurred while registering the API.');
                 }
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Ocorreu um erro ao cadastrar a API.');
+                alert('An error occurred while registering the API.');
             });
     });
 </script>
@@ -256,15 +268,15 @@
         })
             .then(response => {
                 if (response.ok) {
-                    alert('Erro ao desligar o servidor.');
+                    alert('Error shutting down the server.');
                     location.reload();
                 } else {
-                    alert('Servidor desligado com sucesso.');
+                    alert('Server shut down successfully.');
                 }
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Servidor desligado com sucesso.');
+                alert('Server shut down successfully.');
             });
     }
 </script>

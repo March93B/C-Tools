@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
 
-    <title>Como usar</title>
+    <title>How to use</title>
     <link th:href="@{/index.css}" rel="stylesheet" type="text/css" media="all">
     <link th:href="@{/app.css}" rel="stylesheet" type="text/css" media="all">
 
@@ -88,6 +88,12 @@
         #blocked4 {
             display: none;
         }
+        #blocked5 {
+            display: none;
+        }
+        #blocked6 {
+            display: none;
+        }
         @media (max-width: 992px) {
             #blocked1 {
                 display: block;
@@ -99,6 +105,12 @@
                 display: block;
             }
             #blocked4 {
+                display: block;
+            }
+            #blocked5 {
+                display: block;
+            }
+            #blocked6 {
                 display: block;
             }
 
@@ -137,13 +149,13 @@
                         <a class="nav-link" href="codeql">CodeQL</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="create">Cadastrar API's</a>
+                        <a class="nav-link" href="create">Register APIs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Como usar</a>
+                        <a class="nav-link" href="#">How to use</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="shutdownServer()">Desligar servidor</a>
+                        <a class="nav-link" href="#" onclick="shutdownServer()">Shutdown</a>
                     </li>
                 </ul>
             </div>
@@ -153,9 +165,9 @@
 </div>
 <div class="py-5 text-center">
 
-    <h2>Como usar</h2>
+    <h2>How to Use</h2>
     <p class="lead">
-         Como cadastrar API's do Sonar/BlackDuck
+         How to register APIs/front
     </p>
 </div>
 <main class="container">
@@ -321,11 +333,78 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">Cadastro das API's</strong>
+                    <h3 class="mb-0">Cadastrando uma API</h3>
+                    <div class="mb-1 text-muted"></div>
+                    <p class="mb-auto">Para cadastrar uma API, utilize as urls como visto anteriormente</p>
+                    <a href="#" id="blocked5" class="stretched-link">Clique para abrir a imagem</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
+                        <a href="#" class="stretched-link" id="open5">
+                            <defs>
+                                <filter id="blurFilter">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
+                                </filter>
+                            </defs>
+                            <title>Imagem de exemplo</title>
+                            <rect width="100%" height="100%" fill="#55595c" />
+                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                                   preserveAspectRatio="xMidYMid slice" />
 
+                            <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
+                                  alignment-baseline="middle" transform="translate(-60, -15)" />
+                            <text x="50%" y="48%" fill="#ffffff" text-anchor="middle" alignment-baseline="middle">
+                                <tspan x="50%" dy="0">Clique aqui</tspan>
+                                <tspan x="50%" dy="1.2em">para abrir</tspan>
+                                <tspan x="50%" dy="1.2em">a imagem</tspan>
+                            </text>
+                        </a>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">Cadastro das API's</strong>
+                    <h3 class="mb-0">Cadastrando uma API</h3>
+                    <div class="mb-1 text-muted"></div>
+                    <p class="mb-auto">Para cadastrar uma API, utilize as urls como visto anteriormente</p>
+                    <a href="#" id="blocked6" class="stretched-link">Clique para abrir a imagem</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="200" height="250" role="img" aria-label="Imagem de exemplo">
+                        <a href="#" class="stretched-link" id="open6">
+                            <defs>
+                                <filter id="blurFilter">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+                                </filter>
+                            </defs>
+                            <title>Imagem de exemplo</title>
+                            <rect width="100%" height="100%" fill="#55595c" />
+                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                                   preserveAspectRatio="xMidYMid slice" />
+
+                            <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
+                                  alignment-baseline="middle" transform="translate(-60, -15)" />
+                            <text x="50%" y="48%" fill="#ffffff" text-anchor="middle" alignment-baseline="middle">
+                                <tspan x="50%" dy="0">Clique aqui</tspan>
+                                <tspan x="50%" dy="1.2em">para abrir</tspan>
+                                <tspan x="50%" dy="1.2em">a imagem</tspan>
+                            </text>
+                        </a>
+                    </svg>
+                </div>
+            </div>
+        </div>
         <footer class="my-5 pt-5 text-muted text-center text-small">
             <p class="mb-1">2024 Crawler</p>
             <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Como usar</a></li>
+                <li class="list-inline-item"><a href="#">How to use</a></li>
             </ul>
         </footer>
     </div>
@@ -349,6 +428,10 @@
     var blocked3 = document.getElementById("blocked3");
     var open4 = document.getElementById("open4");
     var blocked4 = document.getElementById("blocked4");
+    var open5 = document.getElementById("open5");
+    var blocked5 = document.getElementById("blocked5");
+    var open6 = document.getElementById("open6");
+    var blocked6 = document.getElementById("blocked6");
     var closeModalBtn = document.getElementById("closeModalBtn");
     var mediaPreview = document.getElementById("mediaPreview");
     const img1 = '/images/aaaaaaaaaaaaaaaaaaaa.png';
@@ -372,6 +455,14 @@
         modal.style.display = "block";
         document.getElementById('mediaPreview').src = img4;
     }
+    open5.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img4;
+    }
+    open6.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img4;
+    }
     blocked1.onclick = function() {
         modal.style.display = "block";
         document.getElementById('mediaPreview').src = img1;
@@ -387,8 +478,16 @@
     }
     blocked4.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img4
-        ;
+        document.getElementById('mediaPreview').src = img4;
+    }
+    blocked5.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img4;
+    }
+
+    blocked6.onclick = function() {
+        modal.style.display = "block";
+        document.getElementById('mediaPreview').src = img4;
     }
 
     closeModalBtn.onclick = function() {
@@ -414,15 +513,15 @@
         })
             .then(response => {
                 if (response.ok) {
-                    alert('Erro ao desligar o servidor.');
+                    alert('Error shutting down the server.');
                     location.reload();
                 } else {
-                    alert('Servidor desligado com sucesso.');
+                    alert('Server shut down successfully.');
                 }
             })
             .catch(error => {
                 console.error('Erro:', error);
-                alert('Servidor desligado com sucesso.');
+                alert('Server shut down successfully.');
             });
     }
 </script>

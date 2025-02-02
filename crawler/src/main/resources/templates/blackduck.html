@@ -190,7 +190,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Progresso da execução</h5>
+                            <h5 class="modal-title">Execution progress (Close Excel Main)</h5>
                         <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -231,13 +231,13 @@
                             <a class="nav-link" href="codeql">CodeQL</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="create">Cadastrar API's</a>
+                            <a class="nav-link" href="create">Register APIs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="how">Como usar</a>
+                            <a class="nav-link" href="how">How to use</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="shutdown">Desligar servidor</a>
+                            <a class="nav-link" href="#" onclick="shutdownServer()">Shutdown</a>
                         </li>
 
                     </ul>
@@ -247,12 +247,12 @@
         <main>
             <div class="py-5 text-center">
                 <h2>Blackduck</h2>
-                <p class="lead">Execute o crawler, consulte e delete API's</p>
+                <p class="lead">Execute the crawler, find and delete APIs</p>
             </div>
             <div class="d-flex justify-content-center">
                 <div class="col-md-4 mb-4 justify-content-center">
                     <label class="btn btn btn-primary ">
-                        <input type="radio" name="options" id="option1" autocomplete="off"> Todos
+                        <input type="radio" name="options" id="option1" autocomplete="off"> All
                     </label>
                     <label class="btn btn-primary ">
                         <input type="radio" name="options" id="option2" autocomplete="off" disabled > Front
@@ -277,9 +277,9 @@
                         <input type="text" class="form-control" id="cookie" placeholder="cookie" required>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label">Env</label>
+                        <label class="form-label">Branch</label>
                         <select class="form-select" id="enviroment" name="enviroment" required>
-                            <option value="">Selecione...</option>
+                            <option value="">Select...</option>
                             <option value="main">Main</option>
                             <option value="refs/heads/releases/">Latest Releases</option>
                             <option value="Releases/UAT">Releases/UAT</option>
@@ -291,7 +291,7 @@
                     </div>
                     <div class="col-md-5">
                         <button class="w-100 btn btn-primary btn-lg mt-4" id="startProcessButton"
-                                type="submit">Executar Crawler</button>
+                                type="submit">Execute Crawler</button>
                     </div>
                     <div class="input-group mb-3 col-md-3">
                         <input type="text" class="form-control" id="searchInput"
@@ -305,12 +305,12 @@
                     <thead>
                     <tr>
                         <th class="col-id" scope="col">#</th>
-                        <th class="col-first" scope="col">Nome da Api/Front</th>
-                        <th class="col-last" scope="col">Url do Blackduck</th>
-                        <th class="col-last" scope="col">back/front</th>
+                        <th class="col-first" scope="col">API/Front name</th>
+                        <th class="col-last" scope="col">BlackDuck URL</th>
+                        <th class="col-last" scope="col">Type</th>
                         <th class="col-last" scope="col">Releases/PROD</th>
                         <th class="col-last" scope="col">Releases/UAT</th>
-                        <th class="col-last" scope="col">Disponível em PROD</th>
+                        <th class="col-last" scope="col">Available on PROD</th>
 
                     </tr>
                     </thead>
@@ -350,7 +350,7 @@
                                        th:value="${blackduck.releasesUAT != null ? blackduck.releasesUAT : ''}"
                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
                                        th:id="'releasesUAT-' + ${blackduck.idBlackDuck}"
-                                       title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
+                                       title="Only numbers and dots are allowed. Example: 1.2.3"/>
                                 <span class="input-group-text"
                                       th:onclick="'updateReleases(' + ${blackduck.idBlackDuck} + ')'" >
             <i class="bi bi-check-circle"></i>
@@ -379,9 +379,9 @@
         </main>
 
         <footer class="my-5 pt-5 text-muted text-center text-small">
-            <p class="mb-1">2024 Crawler</p>
+            <p class="mb-1">2025 Crawler</p>
             <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Como usar</a></li>
+                <li class="list-inline-item"><a href="how">How to use</a></li>
             </ul>
         </footer>
     </div>
@@ -401,7 +401,7 @@
         }
 
         if (!selected) {
-            alert('Por favor, selecione uma opção antes de continuar.');
+            alert('Please select an option before proceeding.');
             event.preventDefault();
             return;
         }
@@ -503,7 +503,7 @@
         function closeModalAndAbort() {
             closeModal();
             console.log("Erro: a barra de progresso ficou parada por 5 segundos!");
-            alert("Erro: o processo parou de responder.");
+            alert("Error: The process has stopped responding.");
         }
 
         function updateProgress() {
@@ -598,11 +598,19 @@
 
             };
         }
+
         if(env === ""){
-            alert("selecione uma opção válida de Env")
-        }else{
+            alert("Select an valid Env option")
+            return
+        }
+        else if(cookieString === ""){
+            alert("Fill cookie input")
+            return;
+        }
+        else{
             openModal();
         }
+
         const postRequest = (endpoint) => {
             fetch(endpoint, {
                 method: 'POST',
@@ -655,12 +663,12 @@
                             return response.text();
                         })
                         .then(() => {
-                            alert('Item excluído com sucesso!');
+                            alert('Item deleted successfully!');
                             window.location.reload();
                         })
                         .catch(error => {
                             console.error('Erro:', error);
-                            alert('Erro ao excluir o item.');
+                            alert('Error deleting the item.');
                         });
                 }
             });
@@ -763,7 +771,25 @@
             });
     }
 </script>
-
+<script>
+    function shutdownServer() {
+        fetch('/shutdown', {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Error shutting down the server.');
+                    location.reload();
+                } else {
+                    alert('Server shut down successfully.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Server shut down successfully.');
+            });
+    }
+</script>
 </body>
 
 
