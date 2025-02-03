@@ -288,8 +288,8 @@
                             <option value="">Select...</option>
                             <option value="main">Main</option>
                             <option value="releases/">Latest Releases</option>
-                            <option value="Releases/UAT">Releases/UAT</option>
-                            <option value="Releases/PROD">Releases/PROD</option>
+                            <option value="UAT">Releases/UAT</option>
+                            <option value="PROD">Releases/PROD</option>
 
                         </select>
                         <!--                        <input type="text" class="form-control" id="env" placeholder="releases/"-->
@@ -509,7 +509,7 @@
         }
 
         function updateProgress() {
-            fetch('/prisma/progress')
+            fetch('/codeql/progress')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Erro na requisição");
@@ -536,7 +536,7 @@
 
                     if (progress >= 100) {
                         clearInterval(progressInterval);
-                        closeModal();
+                        setTimeout(closeModal, 4000);
                     }
                 })
                 .catch(error => {
@@ -576,7 +576,7 @@
 
             };
         }
-        if(env==="releases/PROD"){
+        if(env==="PROD"){
             requestData = {
                 cookie: cookieString,
                 env: env,
@@ -587,7 +587,7 @@
 
             };
         }
-        if(env==="releases/UAT"){
+        if(env==="UAT"){
             requestData = {
                 cookie: cookieString,
                 env: env,

@@ -540,7 +540,7 @@ console.log(selectedOption);
 
                         if (progress >= 100) {
                             clearInterval(progressInterval);
-                            closeModal();
+                            setTimeout(closeModal, 4000);
                         }
                     })
                     .catch(error => {

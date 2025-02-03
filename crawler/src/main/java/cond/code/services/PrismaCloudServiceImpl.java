@@ -197,11 +197,19 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
 
 
             }
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(gitHubs.get(i).getNameApi());
+                System.out.println(result.get(i));
+            }
         }
         if(b ==3){
             for (GitHub gitHub : gitHubs) {
                 result.add("releases/" + gitHub.getReleasesUAT());
 
+            }
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(gitHubs.get(i).getNameApi());
+                System.out.println(result.get(i));
             }
         }
 
@@ -363,10 +371,10 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
                         jobId = getPrismaCloudJobId("main", gitHubs.get(i).getNameApi(), repoOwner, githubToken);
                     }
                     if(b == 2) {
-                        jobId = getPrismaCloudJobId(gitHubs.get(i).getReleasesPROD(), gitHubs.get(i).getNameApi(), repoOwner, githubToken);
+                        jobId = getPrismaCloudJobId(result.get(i), gitHubs.get(i).getNameApi(), repoOwner, githubToken);
                     }
                     if(b == 3) {
-                        jobId = getPrismaCloudJobId(gitHubs.get(i).getReleasesUAT(), gitHubs.get(i).getNameApi(), repoOwner, githubToken);
+                        jobId = getPrismaCloudJobId(result.get(i), gitHubs.get(i).getNameApi(), repoOwner, githubToken);
                     }
 
 

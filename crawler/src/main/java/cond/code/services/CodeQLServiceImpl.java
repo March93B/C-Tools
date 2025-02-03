@@ -276,12 +276,12 @@ public class CodeQLServiceImpl implements CodeQLService {
                     }
                     if(b == 2){
                         finalResult.add(gitHubs.get(i).getUrlApi()+"/security/code-scanning?query=is%3Aopen+tool%3AcodeQL+branch%3A"
-                                +gitHubs.get(i).getReleasesPROD().replace("/","%2F"));
+                                +"releases%2F"+gitHubs.get(i).getReleasesPROD().replace("/","%2F"));
                         System.out.println("URL do job HTML: " + finalResult.get(i));
                     }
                     if(b == 3){
                         finalResult.add(gitHubs.get(i).getUrlApi()+"/security/code-scanning?query=is%3Aopen+tool%3AcodeQL+branch%3A"
-                                +gitHubs.get(i).getReleasesUAT().replace("/","%2F"));
+                                +"releases%2F"+gitHubs.get(i).getReleasesUAT().replace("/","%2F"));
                         System.out.println("URL do job HTML: " + finalResult.get(i));
                     }
 

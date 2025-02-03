@@ -282,8 +282,8 @@
                             <option value="">Select...</option>
                             <option value="main">Main</option>
                             <option value="refs/heads/releases/">Latest Releases</option>
-                            <option value="Releases/UAT">Releases/UAT</option>
-                            <option value="Releases/PROD">Releases/PROD</option>
+                            <option value="UAT">Releases/UAT</option>
+                            <option value="PROD">Releases/PROD</option>
 
                         </select>
                         <!--                            <input type="text" class="form-control" id="enviroment" placeholder="Release 1.4.0..."-->
@@ -534,7 +534,7 @@
 
                     if (progress >= 100) {
                         clearInterval(progressInterval);
-                        closeModal();
+                        setTimeout(closeModal, 4000);
                     }
                 })
                 .catch(error => {
@@ -576,7 +576,7 @@
 
             };
         }
-        if(env==="releases/PROD"){
+        if(env==="PROD"){
             requestData = {
                 cookie: cookie1,
                 cookie2: cookie2,
@@ -587,7 +587,7 @@
 
             };
         }
-        if(env==="releases/UAT"){
+        if(env==="UAT"){
             requestData = {
                 cookie: cookie1,
                 cookie2: cookie2,
