@@ -187,212 +187,212 @@
 </head>
 
 <body>
-    <div class="App">
-        <div class="container">
-            <div id="progressModal" class="modal" tabindex="-1" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Execution progress (Close Excel Main)</h5>
-                            <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p id="progressValue">0%</p>
-                            <div class="progress">
-                                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+<div class="App">
+    <div class="container">
+        <div id="progressModal" class="modal" tabindex="-1" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Execution progress (Close Excel Main)</h5>
+                        <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="progressValue">0%</p>
+                        <div class="progress">
+                            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"
+                                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <nav class="navbar navbar-expand-lg navbar-light rounded" aria-label="Eleventh navbar example"
-                style="background-color: white;">
-                <div class="container-fluid" style="background-color: white;">
-                    <a class="navbar-brand" href="#">Crawler</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-light rounded" aria-label="Eleventh navbar example"
+             style="background-color: white;">
+            <div class="container-fluid" style="background-color: white;">
+                <a class="navbar-brand" href="#">Crawler</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false"
                         aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <div class="collapse navbar-collapse" id="navbarsExample09">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Sonar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="blackduck">BlackDuck</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Seeker(WIP)</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="prisma">PrismaCloud</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="codeql">CodeQL</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="create">Register APIs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="how">How to use</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" onclick="shutdownServer()">Shutdown</a>
-                            </li>
+                <div class="collapse navbar-collapse" id="navbarsExample09">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sonar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="blackduck">BlackDuck</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Seeker(WIP)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="prisma">PrismaCloud</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="codeql">CodeQL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="create">Register APIs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="how">How to use</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="shutdownServer()">Shutdown</a>
+                        </li>
 
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
-            </nav>
-            <main>
-                <div class="py-5 text-center">
-                    <h2>SonarQube</h2>
-                    <p class="lead">Execute the crawler, find and delete APIs</p>
+            </div>
+        </nav>
+        <main>
+            <div class="py-5 text-center">
+                <h2>SonarQube</h2>
+                <p class="lead">Execute the crawler, find and delete APIs</p>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="col-md-4 mb-4 justify-content-center">
+                    <label class="btn btn btn-primary ">
+                        <input type="radio" name="options" id="option1" autocomplete="off"> All
+                    </label>
+                    <label class="btn btn-primary ">
+                        <input type="radio" name="options" id="option2" autocomplete="off"> Front
+                    </label>
+                    <label class="btn btn-primary ">
+                        <input type="radio" name="options" id="option3" autocomplete="off"> Back
+                    </label>
+                    <label class="btn btn-primary">
+                        PROD
+                        <label class="switch">
+                            <input type="checkbox" id="mySwitch">
+                            <span class="slider"></span>
+                        </label>
+                        <span hidden id="switchValue">0</span>
+                    </label>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <div class="col-md-4 mb-4 justify-content-center">
-                        <label class="btn btn btn-primary ">
-                            <input type="radio" name="options" id="option1" autocomplete="off"> All
-                        </label>
-                        <label class="btn btn-primary ">
-                            <input type="radio" name="options" id="option2" autocomplete="off"> Front
-                        </label>
-                        <label class="btn btn-primary ">
-                            <input type="radio" name="options" id="option3" autocomplete="off"> Back
-                        </label>
-                        <label class="btn btn-primary">
-                            PROD
-                            <label class="switch">
-                                <input type="checkbox" id="mySwitch">
-                                <span class="slider"></span>
-                            </label>
-                            <span hidden id="switchValue">0</span>
-                        </label>
-                    </div>
-                </div>
-                <form id="apiForm" method="get" novalidate>
-                    <div class="row g-5">
-                        <div class="col-md-4">
-                            <label class="form-label">Cookie</label>
-                            <input type="text" class="form-control" id="cookie" placeholder="cookie" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Env</label>
-                            <select class="form-select" id="enviroment" name="enviroment" required>
-                                <option value="">Select...</option>
-                                <option value="main">Main</option>
-                                <option value="releases/">Latest Releases</option>
-                                <option value="UAT">Releases/UAT</option>
-                                <option value="PROD">Releases/PROD</option>
-
-                            </select>
-<!--                            <input type="text" class="form-control" id="enviroment" placeholder="Release 1.4.0..."-->
-<!--                                required>-->
-                        </div>
-                        <div class="col-md-5">
-                            <button class="w-100 btn btn-primary btn-lg mt-4" id="startProcessButton"
-                                type="submit">Execute Crawler</button>
-                        </div>
-                        <div class="input-group mb-3 col-md-3">
-                            <input type="text" class="form-control" id="searchInput"
-                                placeholder="Search for APIs" aria-label="Pesquisar">
-                        </div>
-                    </div>
-                </form>
-
+            </div>
+            <form id="apiForm" method="get" novalidate>
                 <div class="row g-5">
-                    <table class="table table-striped table-fixed">
-                        <thead>
-                            <tr>
-                                <th class="col-id" scope="col">#</th>
-                                <th class="col-first" scope="col">API/Front name</th>
-                                <th class="col-last" scope="col">Sonar URL</th>
-                                <th class="col-last" scope="col">Type</th>
-                                <th class="col-last" scope="col">Releases/PROD</th>
-                                <th class="col-last" scope="col">Releases/UAT</th>
-                                <th class="col-last" scope="col">Available on PROD</th>
+                    <div class="col-md-4">
+                        <label class="form-label">Cookie</label>
+                        <input type="text" class="form-control" id="cookie" placeholder="cookie" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Env</label>
+                        <select class="form-select" id="enviroment" name="enviroment" required>
+                            <option value="">Select...</option>
+                            <option value="main">Main</option>
+                            <option value="releases/">Latest Releases</option>
+                            <option value="UAT">Releases/UAT</option>
+                            <option value="PROD">Releases/PROD</option>
 
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <tr th:each="sonar : ${sonars}">
-                                <th class="col-id" scope="row">
-                                    <button class="buttonL delete-button" th:data-id="${sonar.idSonar}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#a60808"
-                                            class="bi bi-trash" viewBox="0 0 16 16">
-                                            <path
-                                                d="M5.5 0a.5.5 0 0 1 .5.5V1h5V.5a.5.5 0 0 1 1 0V1h1.5a.5.5 0 0 1 .5.5v.5H15a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h1V1a.5.5 0 0 1 .5-.5V.5a.5.5 0 0 1 .5-.5zM1 2h14v1H1V2zM3.5 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1z" />
-                                        </svg>
-                                    </button>
-                                </th>
-                                <td class="col-env" th:text="${sonar.nameApi}"></td>
-                                <td class="col-env" th:text="${sonar.urlApi}"></td>
-                                <td class="col-env" th:text="${sonar.type}"></td>
-
-                                <td class="col-env">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" style="height: 30px"
-                                               th:placeholder="${sonar.releasesPROD != null ? sonar.releasesPROD : ''}"
-                                               th:value="${sonar.releasesPROD != null ? sonar.releasesPROD : ''}"
-                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-                                               th:id="'releasesPROD-' + ${sonar.idSonar}"
-                                               title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
-                                        <span class="input-group-text"
-                                              th:onclick="'updateReleases(' + ${sonar.idSonar} + ')'" >
-            <i class="bi bi-check-circle"></i>
-        </span>
-                                    </div>
-                                </td>
-
-
-                                <td class="col-env">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" style="height: 30px"
-                                               th:placeholder="${sonar.releasesUAT != null ? sonar.releasesUAT : ''}"
-                                               th:value="${sonar.releasesUAT != null ? sonar.releasesUAT : ''}"
-                                               oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-                                               th:id="'releasesUAT-' + ${sonar.idSonar}"
-                                               title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
-                                        <span class="input-group-text"
-                                              th:onclick="'updateReleases(' + ${sonar.idSonar} + ')'" >
-            <i class="bi bi-check-circle"></i>
-        </span>
-                                    </div>
-                                </td>
-
-                                <td class="col-env">
-                                    <div class="input-group">
-                                        <div class="form-control">
-                                            <label class="switch">
-                                                <input type="checkbox" id="switch-${sonar.idSonar}"
-                                                       th:checked="${sonar.isActiveProd()}"
-                                                       th:onclick="|updateIsActiveProd(${sonar.idSonar}, this.checked)|">
-                                                <span class="slider"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
+                        </select>
+                        <!--                            <input type="text" class="form-control" id="enviroment" placeholder="Release 1.4.0..."-->
+                        <!--                                required>-->
+                    </div>
+                    <div class="col-md-5">
+                        <button class="w-100 btn btn-primary btn-lg mt-4" id="startProcessButton"
+                                type="submit">Execute Crawler</button>
+                    </div>
+                    <div class="input-group mb-3 col-md-3">
+                        <input type="text" class="form-control" id="searchInput"
+                               placeholder="Search for APIs" aria-label="Pesquisar">
+                    </div>
                 </div>
-            </main>
+            </form>
 
-            <footer class="my-5 pt-5 text-muted text-center text-small">
-                <p class="mb-1">2025 Crawler</p>
-                <ul class="list-inline">
-                    <li class="list-inline-item"><a href="how">How to use</a></li>
-                </ul>
-            </footer>
-        </div>
+            <div class="row g-5">
+                <table class="table table-striped table-fixed">
+                    <thead>
+                    <tr>
+                        <th class="col-id" scope="col">#</th>
+                        <th class="col-first" scope="col">API/Front name</th>
+                        <th class="col-last" scope="col">Sonar URL</th>
+                        <th class="col-last" scope="col">Type</th>
+                        <th class="col-last" scope="col">Releases/PROD</th>
+                        <th class="col-last" scope="col">Releases/UAT</th>
+                        <th class="col-last" scope="col">Available on PROD</th>
+
+                    </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    <tr th:each="sonar : ${sonars}">
+                        <th class="col-id" scope="row">
+                            <button class="buttonL delete-button" th:data-id="${sonar.idSonar}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#a60808"
+                                     class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path
+                                            d="M5.5 0a.5.5 0 0 1 .5.5V1h5V.5a.5.5 0 0 1 1 0V1h1.5a.5.5 0 0 1 .5.5v.5H15a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h1V1a.5.5 0 0 1 .5-.5V.5a.5.5 0 0 1 .5-.5zM1 2h14v1H1V2zM3.5 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1zm3 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5h1z" />
+                                </svg>
+                            </button>
+                        </th>
+                        <td class="col-env" th:text="${sonar.nameApi}"></td>
+                        <td class="col-env" th:text="${sonar.urlApi}"></td>
+                        <td class="col-env" th:text="${sonar.type}"></td>
+
+                        <td class="col-env">
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="height: 30px"
+                                       th:placeholder="${sonar.releasesPROD != null ? sonar.releasesPROD : ''}"
+                                       th:value="${sonar.releasesPROD != null ? sonar.releasesPROD : ''}"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                       th:id="'releasesPROD-' + ${sonar.idSonar}"
+                                       title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
+                                <span class="input-group-text"
+                                      th:onclick="'updateReleases(' + ${sonar.idSonar} + ')'" >
+            <i class="bi bi-check-circle"></i>
+        </span>
+                            </div>
+                        </td>
+
+
+                        <td class="col-env">
+                            <div class="input-group">
+                                <input type="text" class="form-control" style="height: 30px"
+                                       th:placeholder="${sonar.releasesUAT != null ? sonar.releasesUAT : ''}"
+                                       th:value="${sonar.releasesUAT != null ? sonar.releasesUAT : ''}"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                       th:id="'releasesUAT-' + ${sonar.idSonar}"
+                                       title="Somente números e pontos são permitidos. Exemplo: 1.2.3"/>
+                                <span class="input-group-text"
+                                      th:onclick="'updateReleases(' + ${sonar.idSonar} + ')'" >
+            <i class="bi bi-check-circle"></i>
+        </span>
+                            </div>
+                        </td>
+
+                        <td class="col-env">
+                            <div class="input-group">
+                                <div class="form-control">
+                                    <label class="switch">
+                                        <input type="checkbox" id="switch-${sonar.idSonar}"
+                                               th:checked="${sonar.isActiveProd()}"
+                                               th:onclick="|updateIsActiveProd(${sonar.idSonar}, this.checked)|">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">2025 Crawler</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="how">How to use</a></li>
+            </ul>
+        </footer>
     </div>
-    <script th:src="@{/bootstrap.bundle.min.js}"></script>
+</div>
+<script th:src="@{/bootstrap.bundle.min.js}"></script>
 
-    <script>
+<script>
         document.getElementById('startProcessButton').addEventListener('click', function(event) {
             const options = document.getElementsByName('options');
             let selected = false;
@@ -452,7 +452,7 @@
         }
     </script>
 
-    <script>
+<script>
         const switchElement = document.getElementById("mySwitch");
         const switchValueDisplay = document.getElementById("switchValue");
         var switchV;
@@ -535,7 +535,7 @@ console.log(selectedOption);
                             lastProgress = progress;
 
                             clearTimeout(inactivityTimeout);
-                            inactivityTimeout = setTimeout(closeModalAndAbort, 5000);
+                            inactivityTimeout = setTimeout(closeModalAndAbort, 10000);
                         }
 
                         if (progress >= 100) {
@@ -647,7 +647,7 @@ console.log(selectedOption);
      }
 
     </script>
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.delete-button').forEach(button => {
                 button.addEventListener('click', (event) => {
@@ -682,7 +682,7 @@ console.log(selectedOption);
         });
     </script>
 
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', () => {
             const tooltip = document.createElement('div');
             tooltip.className = 'tooltip';
@@ -712,7 +712,7 @@ console.log(selectedOption);
         });
     </script>
 
-    <script>
+<script>
         function updateReleases(id) {
             const releasesInput = document.getElementById('releasesPROD-' + id);
             const releasesInput2 = document.getElementById('releasesUAT-' + id);
@@ -777,7 +777,7 @@ console.log(selectedOption);
                 });
         }
     </script>
-    <script>
+<script>
         function shutdownServer() {
             fetch('/shutdown', {
                 method: 'DELETE'

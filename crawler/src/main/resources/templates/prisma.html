@@ -292,8 +292,8 @@
                             <option value="Releases/PROD">Releases/PROD</option>
 
                         </select>
-<!--                        <input type="text" class="form-control" id="env" placeholder="releases/"-->
-<!--                               required>-->
+                        <!--                        <input type="text" class="form-control" id="env" placeholder="releases/"-->
+                        <!--                               required>-->
                     </div>
                     <div class="col-md-3">
                         <button class="w-100 btn btn-primary btn-lg mt-4" id="startProcessButton"
@@ -531,7 +531,7 @@
                         lastProgress = progress;
 
                         clearTimeout(inactivityTimeout);
-                        inactivityTimeout = setTimeout(closeModalAndAbort, 5000);
+                        inactivityTimeout = setTimeout(closeModalAndAbort, 10000);
                     }
 
                     if (progress >= 100) {

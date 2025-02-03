@@ -190,7 +190,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                            <h5 class="modal-title">Execution progress (Close Excel Main)</h5>
+                        <h5 class="modal-title">Execution progress (Close Excel Main)</h5>
                         <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -361,12 +361,12 @@
                         <td class="col-env">
                             <div class="input-group">
                                 <div class="form-control">
-                                <label class="switch">
-                                    <input type="checkbox" id="switch-${blackduck.idBlackDuck}"
-                                           th:checked="${blackduck.isActiveProd()}"
-                                           th:onclick="|updateIsActiveProd(${blackduck.idBlackDuck}, this.checked)|">
-                                    <span class="slider"></span>
-                                </label>
+                                    <label class="switch">
+                                        <input type="checkbox" id="switch-${blackduck.idBlackDuck}"
+                                               th:checked="${blackduck.isActiveProd()}"
+                                               th:onclick="|updateIsActiveProd(${blackduck.idBlackDuck}, this.checked)|">
+                                        <span class="slider"></span>
+                                    </label>
                                 </div>
                             </div>
                         </td>
@@ -529,7 +529,7 @@
                         lastProgress = progress;
 
                         clearTimeout(inactivityTimeout);
-                        inactivityTimeout = setTimeout(closeModalAndAbort, 5000);
+                        inactivityTimeout = setTimeout(closeModalAndAbort, 10000);
                     }
 
                     if (progress >= 100) {

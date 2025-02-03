@@ -10,10 +10,10 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>all</groupId>
-	<artifactId>crawler</artifactId>
-	<version>1.0</version>
-	<name>one</name>
+	<groupId>cond</groupId>
+	<artifactId>crawlerEY</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>code</name>
 	<description>main code</description>
 
 	<properties>
@@ -162,7 +162,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>march.CodeApplication</mainClass>
+					<mainClass>cond.code.CodeApplication</mainClass>
 				</configuration>
 			</plugin>
 
