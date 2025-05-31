@@ -531,12 +531,12 @@
                         lastProgress = progress;
 
                         clearTimeout(inactivityTimeout);
-                        inactivityTimeout = setTimeout(closeModalAndAbort, 10000);
+                        inactivityTimeout = setTimeout(closeModalAndAbort, 20000);
                     }
 
                     if (progress >= 100) {
                         clearInterval(progressInterval);
-                        setTimeout(closeModal, 4000);
+                        setTimeout(closeModal, 4000)
                     }
                 })
                 .catch(error => {

@@ -44,7 +44,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
     private static List<String> blackduckExcel = new ArrayList<>();
     int totalTasks = 0;
 
-    private static final Pattern VERSION_PATTERN = Pattern.compile("^refs/heads/releases/\\d+\\.\\d+(\\.\\d+)?$");
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^releases/\\d+\\.\\d+(\\.\\d+)?$");
 
     private boolean isValidVersion(String versionName) {
         Matcher matcher = VERSION_PATTERN.matcher(versionName);
@@ -165,6 +165,26 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         Sort sort = Sort.by(Sort.Order.asc( "nameApi").ignoreCase());
         return blackDuckRepository.findAllByActiveProd(true,sort);
     }
+    @Override
+    public List<BlackDuck> getBlackDucksFront(){
+        Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
+        return blackDuckRepository.findAllByTypeEquals("Front",sort);
+    }
+    @Override
+    public List <BlackDuck> getBlackDucksFrontProd(){
+        Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
+        return blackDuckRepository.findAllByTypeEqualsAndActiveProd("Front",true, sort);
+    }
+    @Override
+    public List<BlackDuck> getBlackDucksBack(){
+        Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
+        return blackDuckRepository.findAllByTypeEquals("Back",sort);
+    }
+    @Override
+    public List <BlackDuck> getBlackDucksBackProd(){
+        Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
+        return blackDuckRepository.findAllByTypeEqualsAndActiveProd("Back",true, sort);
+    }
 
 
 
@@ -193,13 +213,13 @@ public class BlackDuckServiceImpl implements BlackDuckService {
                     String versionName = item.optString("versionName");
                     System.out.println("Checking versionName: " + versionName);
 
-                    if (envv.trim().equals("refs/heads/releases/")) {
+                    if (envv.trim().equals("releases/")) {
                         if (isValidVersion(versionName)) {
                             versions.add(versionName);
                         }
                     } else if(versionName.equals(envv.trim())){
                         versions.add(versionName);
-                        blackduckExcel.add(" ");
+                        blackduckExcel.add("main");
 
                     }
                 }
@@ -207,7 +227,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
 
             if (!versions.isEmpty()) {
                 String latestVersion = versions.stream()
-                        .map(v -> v.replace("refs/heads/releases/", ""))
+                        .map(v -> v.replace("releases/", ""))
                         .map(v -> new Version(v))
                         .max(Comparator.naturalOrder())
                         .map(Version::toString)
@@ -216,7 +236,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
                 if (latestVersion != null) {
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
-                        if (latestVersion.equals(item.optString("versionName").replace("refs/heads/releases/", ""))) {
+                        if (latestVersion.equals(item.optString("versionName").replace("releases/", ""))) {
                             JSONObject meta = item.optJSONObject("_meta");
                             if (meta != null) {
                                 JSONArray links = meta.optJSONArray("links");
@@ -268,7 +288,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
             if (latestVersion != null) {
                 for (int i = 0; i < items.length(); i++) {
                     JSONObject item = items.getJSONObject(i);
-                    if (latestVersion.equals(item.optString("versionName").replace("refs/heads/releases/", ""))) {
+                    if (latestVersion.equals(item.optString("versionName").replace("releases/", ""))) {
                         JSONObject meta = item.optJSONObject("_meta");
                         if (meta != null) {
                             JSONArray links = meta.optJSONArray("links");
@@ -483,26 +503,26 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         if(b==1){
             for (int i = 0; i < blackDucks.size(); i++) {
                 String apiName = blackDucks.get(i).getNameApi();
+                headerRow.createCell(headerIndex++).setCellValue(apiName + " Branch");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. Critical "+ blackduckExcel.get(i));
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. High "+ blackduckExcel.get(i));
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " License "+ blackduckExcel.get(i));
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " License M "+ blackduckExcel.get(i));
-                headerRow.createCell(headerIndex++).setCellValue("LGPL "+ blackduckExcel.get(i));
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Operational "+ blackduckExcel.get(i));
 
             }
 
             Row dataRow = sheet.createRow(headerRowIndex + 1);
             int dataIndex = 0;
+            int index =0;
             for (BlackDuckServiceImpl.BlackDuckData data : blackDuckDataList) {
-
+                dataRow.createCell(dataIndex++).setCellValue(blackduckExcel.get(index));
                 dataRow.createCell(dataIndex++).setCellValue(data.getCriticalVulnerability());
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighVulnerability());
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighLicense());
                 dataRow.createCell(dataIndex++).setCellValue(data.getMediumLicense());
-                dataRow.createCell(dataIndex++).setCellValue(" ");
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighOperational());
-
+                index++;
             }
 
             for (int i = 0; i < headerRow.getLastCellNum(); i++) {
@@ -513,55 +533,56 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         if(b==2){
             for (BlackDuck data : blackDucks) {
                 String apiName = data.getNameApi()+" "+data.getReleasesPROD();
+                headerRow.createCell(headerIndex++).setCellValue(apiName+" Branch");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. Critical");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. High");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " License");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " License M");
-                headerRow.createCell(headerIndex++).setCellValue("LGPL");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Operational");
 
             }
 
             Row dataRow = sheet.createRow(headerRowIndex + 1);
             int dataIndex = 0;
+            int index = 0;
             for (BlackDuckServiceImpl.BlackDuckData data : blackDuckDataList) {
-
+                dataRow.createCell(dataIndex++).setCellValue(blackduckExcel.get(index));
                 dataRow.createCell(dataIndex++).setCellValue(data.getCriticalVulnerability());
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighVulnerability());
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighLicense());
                 dataRow.createCell(dataIndex++).setCellValue(data.getMediumLicense());
-                dataRow.createCell(dataIndex++).setCellValue(" ");
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighOperational());
-
+                index++;
             }
 
             for (int i = 0; i < headerRow.getLastCellNum(); i++) {
                 sheet.autoSizeColumn(i);
             }
         }
+
         if(b==3){
             for (BlackDuck data : blackDucks) {
                 String apiName = data.getNameApi()+" "+data.getReleasesUAT();
+                headerRow.createCell(headerIndex++).setCellValue(apiName+" Branch");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. Critical");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Sec. High");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " License");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " License M");
-                headerRow.createCell(headerIndex++).setCellValue("LGPL");
                 headerRow.createCell(headerIndex++).setCellValue(apiName + " Operational");
 
             }
 
             Row dataRow = sheet.createRow(headerRowIndex + 1);
             int dataIndex = 0;
+            int index = 0;
             for (BlackDuckServiceImpl.BlackDuckData data : blackDuckDataList) {
-
+                dataRow.createCell(dataIndex++).setCellValue(blackduckExcel.get(index));
                 dataRow.createCell(dataIndex++).setCellValue(data.getCriticalVulnerability());
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighVulnerability());
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighLicense());
                 dataRow.createCell(dataIndex++).setCellValue(data.getMediumLicense());
-                dataRow.createCell(dataIndex++).setCellValue(" ");
                 dataRow.createCell(dataIndex++).setCellValue(data.getHighOperational());
-
+                index++;
             }
 
             for (int i = 0; i < headerRow.getLastCellNum(); i++) {

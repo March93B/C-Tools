@@ -281,7 +281,7 @@
                         <select class="form-select" id="enviroment" name="enviroment" required>
                             <option value="">Select...</option>
                             <option value="main">Main</option>
-                            <option value="refs/heads/releases/">Latest Releases</option>
+                            <option value="releases/">Latest Releases</option>
                             <option value="UAT">Releases/UAT</option>
                             <option value="PROD">Releases/PROD</option>
 
@@ -534,7 +534,7 @@
 
                     if (progress >= 100) {
                         clearInterval(progressInterval);
-                        setTimeout(closeModal, 4000);
+                        setTimeout(closeModal, 4000)
                     }
                 })
                 .catch(error => {
@@ -565,7 +565,7 @@
 
             };
         }
-        if(env==="refs/heads/releases/"){
+        if(env==="releases/"){
             requestData = {
                 cookie: cookie1,
                 cookie2: cookie2,

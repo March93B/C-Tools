@@ -38,7 +38,6 @@ public class SonarServiceImpl implements SonarService{
         return matcher.matches();
     }
 
-    StringBuilder message = new StringBuilder();
     int progress = 0;
     int totalTasks =0;
     private List<String> versionsExcel = new ArrayList<>();
@@ -81,7 +80,6 @@ public class SonarServiceImpl implements SonarService{
                 existingSonar.setUrlApi(existingSonar.getUrlApi());
             }
 
-
             if (sonar.isActiveProd() != null) {
                 existingSonar.setActiveProd(sonar.isActiveProd());
             }
@@ -100,7 +98,7 @@ public class SonarServiceImpl implements SonarService{
 
             sonarRepository.save(existingSonar);
         } else {
-            throw new RuntimeException("Sonar Não encontrado");
+            throw new RuntimeException("Sonar não encontrado");
         }
     }
     @Override
@@ -173,7 +171,6 @@ public class SonarServiceImpl implements SonarService{
     public synchronized void updateProgress(int completedTasks) {
         progress = (int) ((double) completedTasks / totalTasks * 100);
     }
-
     private static final String FILE_NAME = "Main.xlsx";
     private static final String SHEET_NAME = "Sonar";
     private boolean processLinkSonar(HttpClient client, Sonar sonar, String env, String cookieSonar, String cookieSonar2) throws IOException, InterruptedException {
@@ -185,9 +182,6 @@ public class SonarServiceImpl implements SonarService{
             if (parts.length > 1) {
                 String componentPart = parts[1];
                 apiMain = componentPart.split("&")[0];
-                message.append("O valor extraído é: ").append(apiMain);
-            } else {
-                message.append("Parâmetro 'component' não encontrado");
             }
 
             int index = sonar.getUrlApi().trim().indexOf("/api");
@@ -222,7 +216,7 @@ public class SonarServiceImpl implements SonarService{
                             }
                         } else {
                             processSonarEnvironment(client,sonar,env,cookieSonar,cookieSonar2);
-                            versionsExcel.add(" ");
+                            versionsExcel.add("main");
                             return true;
                         }
                     }
@@ -240,12 +234,10 @@ public class SonarServiceImpl implements SonarService{
                         String latestRelease = "releases/" + latestVersion;
                         processSonarEnvironment(client, sonar, latestRelease, cookieSonar, cookieSonar2);
                         versionsExcel.add(latestVersion);
-                        message.append("Processando: ").append(sonar.getUrlApi()).append(latestRelease);
                         return true;
                     }else{
                         versionsExcel.add("error");
                         processSonarEnvironment(client, sonar, "error404", cookieSonar, cookieSonar2);
-                        message.append("Erro ao processar: ").append(sonar.getUrlApi());
                         return false;
                     }
                 }
@@ -254,13 +246,11 @@ public class SonarServiceImpl implements SonarService{
             e.printStackTrace();
             versionsExcel.add("error");
             processSonarEnvironment(client, sonar, "error404", cookieSonar, cookieSonar2);
-            message.append("Erro ao processar: ").append(sonar.getUrlApi());
             return false;
         }
 
         processSonarEnvironment(client, sonar, "error404", cookieSonar, cookieSonar2);
         versionsExcel.add("error");
-        message.append("Erro ao processar: ").append(sonar.getUrlApi());
         return false;
     }
 
@@ -273,15 +263,12 @@ public class SonarServiceImpl implements SonarService{
             if (parts.length > 1) {
                 String componentPart = parts[1];
                 apiMain = componentPart.split("&")[0];
-                message.append("O valor extraído é: ").append(apiMain);
             } else {
-                message.append("Parâmetro 'component' não encontrado");
             }
 
             int index = sonar.getUrlApi().trim().indexOf("/api");
             if (index != -1) {
                 urlBeforeApi = sonar.getUrlApi().trim().substring(0, index);
-                System.out.println("Parte da URL antes de '/api': " + urlBeforeApi);
             } else {
                 System.out.println("'/api' não encontrado na URL.");
             }
@@ -296,19 +283,17 @@ public class SonarServiceImpl implements SonarService{
 
             if (response.statusCode() == 200) {
 
-
                 String latestVersion = "";
 
                 if(b==2){
                     latestVersion = sonar.getReleasesPROD();
-
+                    versionsExcel.add(latestVersion);
                 }
+
                 if(b==3){
                     latestVersion = sonar.getReleasesUAT();
-
+                    versionsExcel.add(latestVersion);
                 }
-
-
 
                 if (latestVersion != null) {
                     String latestRelease = "releases/" + latestVersion;
@@ -437,7 +422,8 @@ public class SonarServiceImpl implements SonarService{
 
             for (int i = 0; i < sonars.size(); i++) {
                 headerRow.createCell(colNum).setCellValue(sonars.get(i).getNameApi()+" "+versionsExcel.get(i));
-                colNum++;
+                headerRow.createCell(colNum+1).setCellValue(sonars.get(i).getNameApi()+" "+versionsExcel.get(i));
+                colNum+=2;
             }
 
         }
@@ -451,7 +437,6 @@ public class SonarServiceImpl implements SonarService{
         }
         if(b==3){
             dateRow.createCell(0).setCellValue("UAT" + " " + date);
-
             for (Sonar sonar : sonars) {
                 headerRow.createCell(colNum).setCellValue(sonar.getNameApi()+" "+sonar.getReleasesUAT());
                 colNum++;
@@ -464,16 +449,22 @@ public class SonarServiceImpl implements SonarService{
         CellStyle percentageStyle = workbook.createCellStyle();
         DataFormat format = workbook.createDataFormat();
         percentageStyle.setDataFormat(format.getFormat("0.00%"));
-
+        System.out.println("AKI "+ colNum);
+        int count =0;
+        int count2 =0;
         for (int i = 0; i < colNum; i++) {
             Cell cell = dataRow.createCell(i);
-            if (i < valueList.size()) {
-                double value = valueList.get(i);
-                if (Double.isNaN(value)) {
-                    cell.setCellValue("error");
-                } else {
+            if (count2<= valueList.size()) {
+                double value = valueList.get(count);
+                if (i % 2==0 || i == 0) {
+                    cell.setCellValue(versionsExcel.get(count2));
+                    count2++;
+
+                }else{
                     cell.setCellValue(value);
                     cell.setCellStyle(percentageStyle);
+                    count++;
+
                 }
             } else {
                 cell.setCellValue("error");

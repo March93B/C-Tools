@@ -209,7 +209,7 @@
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
 
-                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/sonarRegister.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -227,7 +227,7 @@
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-3 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-success">Cookie Sonar</strong>
+                    <strong class="d-inline-block mb-2 text-success">Sonar cookie</strong>
                     <h3 class="mb-0">How to get the Sonar cookie</h3>
                     <div class="mb-1 text-muted"></div>
                     <p class="mb-auto">Select the cookie in any request.
@@ -244,7 +244,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/cookiesonar.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -283,7 +283,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/blackduckregister.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -317,7 +317,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/blackduckcookie.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
                                   alignment-baseline="middle" transform="translate(-60, -15)" />
@@ -350,7 +350,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/githubregister.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -386,7 +386,7 @@
                             </defs>
                             <title>Imagem de exemplo</title>
                             <rect width="100%" height="100%" fill="#55595c" />
-                            <image th:href="@{/images/aaaaaaaaaaaaaaaaaaaa.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
+                            <image th:href="@{/images/githubcookie.png}" x="0" y="0" width="100%" height="100%" filter="url(#blurFilter)"
                                    preserveAspectRatio="xMidYMid slice" />
 
                             <rect x="50%" y="45%" width="120" height="80" fill="rgba(0, 0, 0, 0.6)" text-anchor="middle"
@@ -439,7 +439,14 @@
     var blocked6 = document.getElementById("blocked6");
     var closeModalBtn = document.getElementById("closeModalBtn");
     var mediaPreview = document.getElementById("mediaPreview");
-    const img1 = '/images/aaaaaaaaaaaaaaaaaaaa.png';
+    const img1 = '/images/sonarRegister.png';
+    const img2 = '/images/cookiesonar.png';
+    const img3 = '/images/githubregister.png';
+
+    const img4 = '/images/githubcookie.png';
+
+    const img5 = '/images/blackduckregister.png';
+    const img6 = '/images/blackduckcookie.png';
 
 
     open1.onclick = function() {
@@ -448,23 +455,23 @@
     }
     open2.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img2;
     }
     open3.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img3;
     }
     open4.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img4;
     }
     open5.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img5;
     }
     open6.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img6;
     }
     blocked1.onclick = function() {
         modal.style.display = "block";
@@ -472,25 +479,25 @@
     }
     blocked2.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img2;
     }
     blocked3.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img3;
 
     }
     blocked4.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img4;
     }
     blocked5.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img5;
     }
 
     blocked6.onclick = function() {
         modal.style.display = "block";
-        document.getElementById('mediaPreview').src = img1;
+        document.getElementById('mediaPreview').src = img6;
     }
 
     closeModalBtn.onclick = function() {

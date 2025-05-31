@@ -414,8 +414,10 @@ public class CodeQLServiceImpl implements CodeQLService {
         System.out.println(result.size());
         int colNum = 0;
         if(b==0) {
-            dateRow.createCell(0).setCellValue(date+" lastest releases");
             for (int i = 0; i < gitHubs.size(); i++) {
+                dateRow.createCell(0).setCellValue(date+" lastest releases");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Open " + result.get(i));
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Closed " + result.get(i));
@@ -427,6 +429,8 @@ public class CodeQLServiceImpl implements CodeQLService {
         if(b==1) {
             for (int i = 0; i < gitHubs.size(); i++) {
                 dateRow.createCell(0).setCellValue(date+" main");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Open " + "main");
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Closed " + "main");
@@ -436,6 +440,8 @@ public class CodeQLServiceImpl implements CodeQLService {
         if(b==2) {
             for (int i = 0; i < gitHubs.size(); i++) {
                 dateRow.createCell(0).setCellValue(date+" PROD Releases");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Open " +  gitHubs.get(i).getReleasesPROD());
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Closed " + gitHubs.get(i).getReleasesPROD());
@@ -446,6 +452,8 @@ public class CodeQLServiceImpl implements CodeQLService {
         if(b==3) {
             for (int i = 0; i < gitHubs.size(); i++) {
                 dateRow.createCell(0).setCellValue(date+" UAT Releases");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Open " +  gitHubs.get(i).getReleasesUAT());
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Closed " + gitHubs.get(i).getReleasesUAT());
@@ -455,14 +463,24 @@ public class CodeQLServiceImpl implements CodeQLService {
         }
         Row dataRow = sheet.createRow(startRow + 2);
 
-
+        int count = 0;
+        int count2= 0;
         for (int i = 0; i < colNum; i++) {
             Cell cell = dataRow.createCell(i);
-            if (i < resultNum.size()) {
-                double value = resultNum.get(i);
-                cell.setCellValue(value);
-            } else {
-                cell.setCellValue("error");
+            if (i % 3 == 0){
+                if (count<result.size()){
+                    cell.setCellValue(result.get(count));
+                    count++;
+                }else{
+                    cell.setCellValue("error");
+                }
+            } else if (i% 3 ==1 || i % 3 == 2) {
+                if (count2<resultNum.size()){
+                    cell.setCellValue(resultNum.get(count2));
+                    count2++;
+                }else{
+                    cell.setCellValue("error");
+                }
             }
         }
 

@@ -71,6 +71,9 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
 
     private String prismaCloudJobName2 = "Prisma Cloud Scanning";
 
+    private String prismaCloudJobName3 = "Scannings / Prisma Cloud Scanning";
+
+
     private RestTemplate restTemplate;
 
     int progress = 0;
@@ -188,6 +191,10 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
                 result.add("main");
 
 
+            }
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(gitHubs.get(i).getNameApi());
+                System.out.println(result.get(i));
             }
         }
 
@@ -321,7 +328,8 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
                 List<Map> jobs = (List<Map>) jobsResponse.getBody().get("jobs");
                 if (jobs != null) {
                     for (Map job : jobs) {
-                        if (prismaCloudJobName.equals(job.get("name")) || prismaCloudJobName2.equals(job.get("name"))) {
+                        if (prismaCloudJobName.equals(job.get("name")) || prismaCloudJobName2.equals(job.get("name"))
+                        ||prismaCloudJobName3.equals(job.get("name"))) {
                             Object jobIdObj = job.get("id");
                             if (jobIdObj instanceof Long) {
                                 return String.valueOf(jobIdObj);
@@ -530,8 +538,10 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
         System.out.println(result.size());
         int colNum = 0;
         if(b==0) {
-            dateRow.createCell(0).setCellValue(date+" lastest releases");
             for (int i = 0; i < gitHubs.size(); i++) {
+                dateRow.createCell(0).setCellValue(date+" lastest releases");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Crit " + result.get(i));
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " High " + result.get(i));
@@ -543,15 +553,20 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
         if(b==1) {
             for (int i = 0; i < gitHubs.size(); i++) {
                 dateRow.createCell(0).setCellValue(date+" main");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Crit " + "main");
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " High " + "main");
                 colNum++;
+
             }
         }
         if(b==2) {
             for (int i = 0; i < gitHubs.size(); i++) {
                 dateRow.createCell(0).setCellValue(date+" PROD Releases");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Crit " +  gitHubs.get(i).getReleasesPROD());
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " High " + gitHubs.get(i).getReleasesPROD());
@@ -562,6 +577,8 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
         if(b==3) {
             for (int i = 0; i < gitHubs.size(); i++) {
                 dateRow.createCell(0).setCellValue(date+" UAT Releases");
+                headerRow.createCell(colNum).setCellValue(" Branch");
+                colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " Crit " +  gitHubs.get(i).getReleasesUAT());
                 colNum++;
                 headerRow.createCell(colNum).setCellValue(gitHubs.get(i).getNameApi() + " High " + gitHubs.get(i).getReleasesUAT());
@@ -572,16 +589,29 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
         Row dataRow = sheet.createRow(startRow + 2);
 
 
+        int count =0;
+        int count2 =0;
+
         for (int i = 0; i < colNum; i++) {
             Cell cell = dataRow.createCell(i);
-            if (i < resultNum.size()) {
-                double value = resultNum.get(i);
-                cell.setCellValue(value);
-            } else {
+        if (i % 3 == 0){
+            if (count<result.size()){
+                cell.setCellValue(result.get(count));
+                count++;
+            }else{
+                cell.setCellValue("error");
+            }
+        } else if (i% 3 ==1 || i % 3 == 2) {
+            if (count2<resultNum.size()){
+                cell.setCellValue(resultNum.get(count2));
+                count2++;
+            }else{
                 cell.setCellValue("error");
             }
         }
 
+
+        }
         for (int i = 0; i < headerRow.getLastCellNum(); i++) {
             sheet.autoSizeColumn(i);
         }
