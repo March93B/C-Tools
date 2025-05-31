@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface GitHubService {
     void createGit(GitHub gitHub);
-    void updateGit(GitHub gitHub);
     void deleteGit(Integer id);
 
     List<GitHub> getGitHubs();

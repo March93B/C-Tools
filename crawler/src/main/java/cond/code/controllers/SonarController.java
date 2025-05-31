@@ -32,20 +32,6 @@ public class SonarController {
         this.sonarService = sonarService;
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Sonar> updateSonar(@RequestBody Sonar sonar, @PathVariable Integer id) {
-        if (sonar == null || id == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        sonar.setIdSonar(id);
-        try {
-            sonarService.updateSonar(sonar);
-            return ResponseEntity.ok(sonar);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteSonar(@PathVariable Integer id){
         try {

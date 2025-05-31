@@ -50,20 +50,6 @@ public class PrismaController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<GitHub> updateGitHub(@PathVariable Integer id, @RequestBody GitHub gitHub) {
-        if (id == null || gitHub == null){
-            return ResponseEntity.badRequest().body(null);
-        }
-        gitHub.setIdGit(id);
-        try {
-            gitHubService.updateGit(gitHub);
-            return ResponseEntity.ok(gitHub);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
     @PostMapping("/exec")
     public ResponseEntity<Void> postGitHub(@RequestBody GitHubRequest gitHubRequest) throws Exception {
 //        String token = "";
