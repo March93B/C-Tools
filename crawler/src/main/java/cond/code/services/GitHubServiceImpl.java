@@ -25,6 +25,48 @@ public class GitHubServiceImpl implements GitHubService {
         githubRepository.save(gitHub);
     }
 
+    @Override
+    public void updateGit(GitHub gitHub) {
+        if (githubRepository.existsById(gitHub.getIdGit())) {
+            GitHub existingGit = githubRepository.findById(gitHub.getIdGit())
+                    .orElseThrow(() -> new RuntimeException("Sonar Não encontrado"));
+
+            if (gitHub.getNameApi() != null && !gitHub.getNameApi().isEmpty()) {
+                existingGit.setNameApi(gitHub.getNameApi());
+            } else if (existingGit.getNameApi() == null) {
+                existingGit.setNameApi(existingGit.getNameApi());
+            }
+
+            if (gitHub.getUrlApi() != null && !gitHub.getUrlApi().isEmpty()) {
+                existingGit.setUrlApi(gitHub.getUrlApi());
+            } else if (existingGit.getUrlApi() == null) {
+                existingGit.setUrlApi(existingGit.getUrlApi());
+            }
+
+            if (gitHub.getType() != null && !gitHub.getType().isEmpty()) {
+                existingGit.setType(gitHub.getType());
+            } else if (existingGit.getType() == null) {
+                existingGit.setType(existingGit.getType());
+            }
+            if (gitHub.isActiveProd() != null) {
+                existingGit.setActiveProd(gitHub.isActiveProd());
+            }
+            if (gitHub.getReleasesPROD() != null && !gitHub.getReleasesPROD().isEmpty()) {
+                existingGit.setReleasesPROD(gitHub.getReleasesPROD());
+            } else if (existingGit.getReleasesPROD() == null) {
+                existingGit.setReleasesPROD(existingGit.getReleasesPROD());
+            }
+            if (gitHub.getReleasesUAT() != null && !gitHub.getReleasesUAT().isEmpty()) {
+                existingGit.setReleasesUAT(gitHub.getReleasesUAT());
+            } else if (existingGit.getReleasesUAT() == null) {
+                existingGit.setReleasesUAT(existingGit.getReleasesUAT());
+            }
+
+            githubRepository.save(existingGit);
+        } else {
+            throw new RuntimeException("Sonar Não encontrado");
+        }
+    }
 
     @Override
     public void deleteGit(Integer id) {

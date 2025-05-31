@@ -32,6 +32,21 @@ public class BlackDuckController {
         return mave;
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<BlackDuck> updateBlackDuck(@RequestBody BlackDuck blackDuck, @PathVariable Integer id) {
+        if (blackDuck == null || id == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        blackDuck.setIdBlackDuck(id);
+        try {
+            blackDuckService.updateBlackDuck(blackDuck);
+            return ResponseEntity.ok(blackDuck);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBlackDuck(@PathVariable Integer id) {
         try {

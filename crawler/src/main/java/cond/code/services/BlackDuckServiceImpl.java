@@ -36,13 +36,14 @@ import java.util.regex.Pattern;
 
 @Service
 public class BlackDuckServiceImpl implements BlackDuckService {
-    // Listas usadas
-    private static List<String> blackduckExcel = new ArrayList<>();
+
     private static List<BlackDuckData> blackDuckDataList = new ArrayList<>();
     private List<String> blackResult = new ArrayList<>();
     int progress = 0;
     int completedTasks = 0;
+    private static List<String> blackduckExcel = new ArrayList<>();
     int totalTasks = 0;
+
     private static final Pattern VERSION_PATTERN = Pattern.compile("^releases/\\d+\\.\\d+(\\.\\d+)?$");
 
     private boolean isValidVersion(String versionName) {
@@ -50,7 +51,6 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         return matcher.matches();
     }
 
-    //"burlar" o certificado
     private static HttpClient createHttpClient() throws Exception {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new javax.net.ssl.TrustManager[]{
@@ -94,6 +94,50 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         return blackDuck.orElseThrow(() -> new RuntimeException("BlackDuck com URL API " + apiName + " não encontrado."));
     }
 
+    @Override
+    public void updateBlackDuck(BlackDuck blackDuck) {
+        if (blackDuckRepository.existsById(blackDuck.getIdBlackDuck())) {
+            BlackDuck existingBlackDuck = blackDuckRepository.findById(blackDuck.getIdBlackDuck())
+                    .orElseThrow(() -> new RuntimeException("BlackDuck Não encontrado"));
+
+            if (blackDuck.getNameApi() != null && !blackDuck.getNameApi().isEmpty()) {
+                existingBlackDuck.setNameApi(blackDuck.getNameApi());
+            } else if (existingBlackDuck.getNameApi() == null) {
+                existingBlackDuck.setNameApi(existingBlackDuck.getNameApi());
+            }
+
+            if (blackDuck.getUrlApi() != null && !blackDuck.getUrlApi().isEmpty()) {
+                existingBlackDuck.setUrlApi(blackDuck.getUrlApi());
+            } else if (existingBlackDuck.getUrlApi() == null) {
+                existingBlackDuck.setUrlApi(existingBlackDuck.getUrlApi());
+            }
+
+            if (blackDuck.getType() != null && !blackDuck.getType().isEmpty()) {
+                existingBlackDuck.setType(blackDuck.getType());
+            } else if (existingBlackDuck.getType() == null) {
+                existingBlackDuck.setType(existingBlackDuck.getType());
+            }
+
+            if (blackDuck.isActiveProd() != null) {
+                existingBlackDuck.setActiveProd(blackDuck.isActiveProd());
+            }
+
+            if (blackDuck.getReleasesPROD() != null && !blackDuck.getReleasesPROD().isEmpty()) {
+                existingBlackDuck.setReleasesPROD(blackDuck.getReleasesPROD());
+            } else if (existingBlackDuck.getReleasesPROD() == null) {
+                existingBlackDuck.setReleasesPROD(existingBlackDuck.getReleasesPROD());
+            }
+            if (blackDuck.getReleasesUAT() != null && !blackDuck.getReleasesUAT().isEmpty()) {
+                existingBlackDuck.setReleasesUAT(blackDuck.getReleasesUAT());
+            } else if (existingBlackDuck.getReleasesUAT() == null) {
+                existingBlackDuck.setReleasesUAT(existingBlackDuck.getReleasesUAT());
+            }
+
+            blackDuckRepository.save(existingBlackDuck);
+        } else {
+            throw new RuntimeException("Sonar Não encontrado");
+        }
+    }
     @Override
     public void deleteBlackDuck(Integer id) {
         Optional<BlackDuck> blackDuck = blackDuckRepository.findById(id);
@@ -148,8 +192,6 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         progress = (int) ((double) completedTasks / totalTasks * 100);
 
     }
-
-    //Faz a coleta das API's disponíveis e da branch especificada
     private boolean processBlackEnvironment(HttpClient client, BlackDuck blackDuck, String cookieSonar, String cookieSonar2, String envv) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(blackDuck.getUrlApi().trim()))
@@ -349,7 +391,6 @@ public class BlackDuckServiceImpl implements BlackDuckService {
         return progress;
     }
 
-    //Extrai os valores de cada API
     private List<BlackDuckServiceImpl.BlackDuckData> processBlackDucks(List<String> urls, String cookie, String cookie2) throws Exception {
         HttpClient client = createHttpClient();
         List<BlackDuckServiceImpl.BlackDuckData> blackDuckDataList = new ArrayList<>();
@@ -390,28 +431,29 @@ public class BlackDuckServiceImpl implements BlackDuckService {
                     completedTasks++;
                     updateProgress(completedTasks);
                     blackDuckData.setError();
-                    System.out.println("Erro ao acessar HTTP " + response.statusCode());
+                    System.out.println("Error accessing the site: HTTP " + response.statusCode());
                 }
             } catch (IOException e) {
                 completedTasks++;
                 updateProgress(completedTasks);
                 blackDuckData.setError();
-                System.out.println("IOException " + urls.get(i));
+                System.out.println("IOException while accessing the URL: " + urls.get(i));
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 completedTasks++;
                 updateProgress(completedTasks);
                 blackDuckData.setError();
-                System.out.println("requisição interrompida " + urls.get(i));
+                System.out.println("Request was interrupted: " + urls.get(i));
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
                 completedTasks++;
                 updateProgress(completedTasks);
                 blackDuckData.setError();
-                System.out.println("Não sei oque aconteceu jkkk" + urls.get(i));
+                System.out.println("Unexpected error: " + urls.get(i));
                 e.printStackTrace();
             }
+
             blackDuckDataList.add(blackDuckData);
         }
         return blackDuckDataList;

@@ -63,6 +63,45 @@ public class SonarServiceImpl implements SonarService{
     }
 
     @Override
+    public void updateSonar(Sonar sonar) {
+        if (sonarRepository.existsById(sonar.getIdSonar())) {
+            Sonar existingSonar = sonarRepository.findById(sonar.getIdSonar())
+                    .orElseThrow(() -> new RuntimeException("Sonar Não encontrado"));
+
+            if (sonar.getNameApi() != null && !sonar.getNameApi().isEmpty()) {
+                existingSonar.setNameApi(sonar.getNameApi());
+            } else if (existingSonar.getNameApi() == null) {
+                existingSonar.setNameApi(existingSonar.getNameApi());
+            }
+
+            if (sonar.getUrlApi() != null && !sonar.getUrlApi().isEmpty()) {
+                existingSonar.setUrlApi(sonar.getUrlApi());
+            } else if (existingSonar.getUrlApi() == null) {
+                existingSonar.setUrlApi(existingSonar.getUrlApi());
+            }
+
+            if (sonar.isActiveProd() != null) {
+                existingSonar.setActiveProd(sonar.isActiveProd());
+            }
+
+            if (sonar.getReleasesPROD() != null && !sonar.getReleasesPROD().isEmpty()) {
+                existingSonar.setReleasesPROD(sonar.getReleasesPROD());
+
+            } else if (existingSonar.getReleasesPROD() == null) {
+                existingSonar.setReleasesPROD(existingSonar.getReleasesPROD());
+            }
+            if (sonar.getReleasesUAT() != null && !sonar.getReleasesUAT().isEmpty()) {
+                existingSonar.setReleasesUAT(sonar.getReleasesUAT());
+            } else if (existingSonar.getReleasesUAT() == null) {
+                existingSonar.setReleasesUAT(existingSonar.getReleasesUAT());
+            }
+
+            sonarRepository.save(existingSonar);
+        } else {
+            throw new RuntimeException("Sonar não encontrado");
+        }
+    }
+    @Override
     public Sonar getSonarById(Integer id) {
         Optional<Sonar> sonar = sonarRepository.findById(id);
         return sonar.orElseThrow(() -> new RuntimeException("Sonar com ID API " + id + " não encontrado."));
