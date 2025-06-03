@@ -467,7 +467,7 @@ public class SonarServiceImpl implements SonarService{
 
                 }
             } else {
-                cell.setCellValue("error");
+                cell.setCellValue("Error");
             }
         }
 

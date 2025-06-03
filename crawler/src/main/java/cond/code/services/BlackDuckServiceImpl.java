@@ -258,7 +258,7 @@ public class BlackDuckServiceImpl implements BlackDuckService {
                 }
             }
         }
-        blackduckExcel.add("error");
+        blackduckExcel.add("Error");
         blackResult.add("https://blackduckorsomar/error/123error/321aaa");
         return false;
     }

@@ -599,14 +599,14 @@ public class PrismaCloudServiceImpl implements PrismaCloudService {
                 cell.setCellValue(result.get(count));
                 count++;
             }else{
-                cell.setCellValue("error");
+                cell.setCellValue("Error");
             }
         } else if (i% 3 ==1 || i % 3 == 2) {
             if (count2<resultNum.size()){
                 cell.setCellValue(resultNum.get(count2));
                 count2++;
             }else{
-                cell.setCellValue("error");
+                cell.setCellValue("Error");
             }
         }
 
