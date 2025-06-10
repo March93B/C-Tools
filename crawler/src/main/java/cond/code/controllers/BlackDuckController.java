@@ -129,6 +129,86 @@ public class BlackDuckController {
 
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/exeblack/front")
+    public ResponseEntity<String> executeBlackDuckFront(@RequestBody BlackDuckRequest request){
+        String cookie = request.getCookie();
+        String cookie2 = request.getCookie2();
+        String envv = request.getEnvv();
+        int releases = request.getRelease();
+        int choice = request.getChoice();
+        int prodOnly = request.getProdOnly();
+        List<BlackDuck> blackDucks;
+        if(prodOnly==1){
+
+            blackDucks = blackDuckService.getBlackDucksFrontProd();
+        }else{
+            blackDucks = blackDuckService.getBlackDucksFront();
+        }
+
+        if(choice==1){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try {
+                    blackDuckService.foundyey(blackDucks, cookie, cookie2, envv,1,1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        if(choice==2){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try {
+                    blackDuckService.foundyey(blackDucks, cookie, cookie2, envv,2,releases);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/exeblack/back")
+    public ResponseEntity<String> executeBlackDuckBack(@RequestBody BlackDuckRequest request){
+        String cookie = request.getCookie();
+        String cookie2 = request.getCookie2();
+        String envv = request.getEnvv();
+        int releases = request.getRelease();
+        int choice = request.getChoice();
+        int prodOnly = request.getProdOnly();
+        List<BlackDuck> blackDucks;
+        if(prodOnly==1){
+
+            blackDucks = blackDuckService.getBlackDucksBackProd();
+        }else{
+            blackDucks = blackDuckService.getBlackDucksBack();
+        }
+
+        if(choice==1){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try {
+                    blackDuckService.foundyey(blackDucks, cookie, cookie2, envv,1,1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        if(choice==2){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(() -> {
+                try {
+                    blackDuckService.foundyey(blackDucks, cookie, cookie2, envv,2,releases);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+
+        return ResponseEntity.ok().build();
+    }
     @GetMapping("/progress")
     public ResponseEntity<Integer> getProgress() {
         return ResponseEntity.ok(blackDuckService.getProgress());

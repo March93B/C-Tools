@@ -255,10 +255,10 @@
                         <input type="radio" name="options" id="option1" autocomplete="off"> All
                     </label>
                     <label class="btn btn-primary ">
-                        <input type="radio" name="options" id="option2" autocomplete="off" disabled > Front
+                        <input type="radio" name="options" id="option2" autocomplete="off" > Front
                     </label>
                     <label class="btn btn-primary ">
-                        <input type="radio" name="options" id="option3" autocomplete="off" disabled> Back
+                        <input type="radio" name="options" id="option3" autocomplete="off"> Back
                     </label>
                     <label class="btn btn-primary">
                         Selected API's
@@ -440,8 +440,8 @@
 
     function getOptionType(option) {
         const mapping = {
-            'option2': 'back',
-            'option3': 'front'
+            'option2': 'front',
+            'option3': 'back'
         };
         return mapping[option] || '';
     }
@@ -633,11 +633,11 @@
         }
 
         if (selectedOption === "option2") {
-            postRequest('/blackduck/exeblack');
+            postRequest('/blackduck/front');
         }
 
         if (selectedOption === "option3") {
-            postRequest('/blackduck/exeblack');
+            postRequest('/blackduck/back');
         }
     }
 </script>
