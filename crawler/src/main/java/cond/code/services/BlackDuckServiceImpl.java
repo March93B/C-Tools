@@ -168,22 +168,22 @@ public class BlackDuckServiceImpl implements BlackDuckService {
     @Override
     public List<BlackDuck> getBlackDucksFront(){
         Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
-        return blackDuckRepository.findAllByTypeEquals("Front",sort);
+        return blackDuckRepository.findAllByTypeEquals("front",sort);
     }
     @Override
     public List <BlackDuck> getBlackDucksFrontProd(){
         Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
-        return blackDuckRepository.findAllByTypeEqualsAndActiveProd("Front",true, sort);
+        return blackDuckRepository.findAllByTypeEqualsAndActiveProd("front",true, sort);
     }
     @Override
     public List<BlackDuck> getBlackDucksBack(){
         Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
-        return blackDuckRepository.findAllByTypeEquals("Back",sort);
+        return blackDuckRepository.findAllByTypeEquals("back",sort);
     }
     @Override
     public List <BlackDuck> getBlackDucksBackProd(){
         Sort sort = Sort.by(Sort.Order.asc("nameApi").ignoreCase());
-        return blackDuckRepository.findAllByTypeEqualsAndActiveProd("Back",true, sort);
+        return blackDuckRepository.findAllByTypeEqualsAndActiveProd("back",true, sort);
     }
 
 

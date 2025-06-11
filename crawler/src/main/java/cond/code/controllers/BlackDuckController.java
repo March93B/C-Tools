@@ -129,7 +129,7 @@ public class BlackDuckController {
 
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/exeblack/front")
+    @PostMapping("/front")
     public ResponseEntity<String> executeBlackDuckFront(@RequestBody BlackDuckRequest request){
         String cookie = request.getCookie();
         String cookie2 = request.getCookie2();
@@ -169,7 +169,7 @@ public class BlackDuckController {
 
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/exeblack/back")
+    @PostMapping("/back")
     public ResponseEntity<String> executeBlackDuckBack(@RequestBody BlackDuckRequest request){
         String cookie = request.getCookie();
         String cookie2 = request.getCookie2();
